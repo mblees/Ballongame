@@ -1,5 +1,4 @@
 import logging
-from enum import Enum
 
 
 class GenericGamemode:
@@ -36,10 +35,3 @@ class HardMode(GenericGamemode):
 
     def run_gameloop(self):
         pass
-
-
-class Modes(Enum):
-    EASY = lambda: EasyMode()
-    MEDIUM = lambda: MediumMode()
-    HARD = lambda: HardMode()
-

@@ -3,7 +3,7 @@ import time
 
 from logging_config import activate_logging_config
 
-from src.gamemodes import Modes, GenericGamemode, EasyMode, MediumMode, HardMode
+from src.Gamemodes import GenericGamemode, EasyMode, MediumMode, HardMode
 
 
 class Ballongame:
