@@ -1,1 +1,6 @@
 # Currently no Requirements are needed to run the code
+
+rpi_ws281x
+adafruit-circuitpython-neopixel
+
+# sudo apt install python3-rpi.gpio

@@ -4,6 +4,7 @@ import time
 from logging_config import activate_logging_config
 
 from src.Gamemodes import GenericGamemode, EasyMode, MediumMode, HardMode
+import RPi.GPIO as GPIO
 
 
 class Ballongame:
@@ -12,6 +13,9 @@ class Ballongame:
         self.logger.setLevel(logging.DEBUG)
         self.mode: GenericGamemode = EasyMode()
         self._running = True
+
+        self.pi = pigpio.pi()
+        GPIO.setmode(GPIO.BCM)
 
     def run(self):
         self.logger.info("Starting Game Loop!")
@@ -22,11 +26,11 @@ class Ballongame:
 
     def change_mode(self):
         if isinstance(self.mode, EasyMode):
-            self.mode = MediumMode()
+            self.mode = MediumMode(self.pi)
         elif isinstance(self.mode, MediumMode):
-            self.mode = HardMode()
+            self.mode = HardMode(self.pi)
         elif isinstance(self.mode, HardMode):
-            self.mode = EasyMode()
+            self.mode = EasyMode(self.pi)
 
 
 if __name__ == "__main__":
