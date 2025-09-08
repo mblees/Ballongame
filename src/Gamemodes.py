@@ -19,18 +19,21 @@ class GenericGamemode:
         self.led.turn_on()
 
     def callback(self, client, userdata, msg):
-        if msg.topic == "Pico1/Eingabe":
-            self.logger.info("Encoder dreht sich")
-        elif msg.topic == "Pico2/Eingabe":
-            if msg.payload.decode() == "0":
+        if msg.payload.decode() == "0":
+            if msg.topic == "Pico1/Eingabe":
+                self.logger.info("Encoder dreht sich")
+                self.led.set_color((255, 0, 0))
+            elif msg.topic == "Pico2/Eingabe":
                 self.logger.info("Button Pressed")
-        elif msg.topic == "Pico3/Eingabe":
-            if msg.payload.decode() == "0":
+                self.led.set_color((0, 255, 0))
+            elif msg.topic == "Pico3/Eingabe":
                 self.logger.info("Fan spinning")
-        elif msg.topic == "Pico4/Eingabe":
-            self.logger.info("Controller geschüttelt")
-        else:
-            pass
+                self.led.set_color((0, 0, 255))
+            elif msg.topic == "Pico4/Eingabe":
+                self.logger.info("Controller geschüttelt")
+                self.led.set_color((255, 0, 255))
+            else:
+                pass
 
     def run_gameloop(self):
         self.logger.warning("Using generic Gamemode Class. Overwrite this function.")
