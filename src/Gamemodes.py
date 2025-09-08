@@ -20,8 +20,8 @@ class GenericGamemode:
         self.mqtt_client.client.publish("Pico1/Eingabe", "Test")
 
 
-    def callback(self, client, userdata, message):
-        self.logger.info(f"Received a new message on topic '{message.topic}' with message '{message.payload}'")
+    def callback(self, topic, payload):
+        self.logger.info(f"Received a new message on topic '{topic}' with message '{payload}'")
 
     def run_gameloop(self):
         self.logger.warning("Using generic Gamemode Class. Overwrite this function.")
