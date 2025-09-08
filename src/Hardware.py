@@ -34,7 +34,7 @@ class LED:
         self.logger = logging.getLogger("LED")
         self.pin = board.D18
         self.pi = pi
-        self.pixels = neopixel.NeoPixel(self.pin, 1, auto_write=True)
+        self.pixels = neopixel.NeoPixel(self.pin, 100, auto_write=True)
         self._color = (0, 0, 0)
         self._state = False
 
