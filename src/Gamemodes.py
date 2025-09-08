@@ -10,17 +10,12 @@ class GenericGamemode:
         self.pi = pi
         self.pump = Pump(self.pi)
         self.releaseValve = ReleaseValve(self.pi)
-        self.LED = LED(self.pi)
+        self.led = LED(self.pi)
 
         self.mqtt_client = mqtt.Client()
-        self.mqtt_client.username_pw_set(username="PicoNet", password="geheimespasswort")
-        self.mqtt_client.connect("192.168.0.127", 1883, 60)
-        self.mqtt_client.on_message = self.callback
-        self.mqtt_client.subscribe("Pico1/Eingabe")
-        self.mqtt_client.subscribe("Pico2/Eingabe")
-        self.mqtt_client.subscribe("Pico3/Eingabe")
-        self.mqtt_client.subscribe("Pico4/Eingabe")
-        self.mqtt_client.loop_start()
+        self.init_mqtt_client()
+        self.led.set_color((255, 0, 0))
+        self.led.turn_on()
 
     def callback(self, client, userdata, msg):
         if msg.topic == "Pico1/Eingabe":
@@ -42,6 +37,16 @@ class GenericGamemode:
 
     def print_mode(self):
         self.logger.info(f"Mode is set to: {str(self.mode)}")
+
+    def init_mqtt_client(self):
+        self.mqtt_client.username_pw_set(username="PicoNet", password="geheimespasswort")
+        self.mqtt_client.connect("192.168.0.127", 1883, 60)
+        self.mqtt_client.on_message = self.callback
+        self.mqtt_client.subscribe("Pico1/Eingabe")
+        self.mqtt_client.subscribe("Pico2/Eingabe")
+        self.mqtt_client.subscribe("Pico3/Eingabe")
+        self.mqtt_client.subscribe("Pico4/Eingabe")
+        self.mqtt_client.loop_start()
 
 
 class EasyMode(GenericGamemode):
