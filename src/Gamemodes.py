@@ -49,7 +49,7 @@ class GenericGamemode:
         connected = False
         while not connected:
             try:
-                self.mqtt_client.connect("192.168.0.127", 1883, 60)
+                self.mqtt_client.connect("192.168.4.1", 1883, 60)
                 connected = True
             except Exception as e:
                 print(f"Connection failed: {e}. Retrying in 5 seconds...")
