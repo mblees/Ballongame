@@ -11,7 +11,7 @@ class GenericGamemode:
         self.releaseValve = ReleaseValve(self.pi)
         self.LED = LED(self.pi)
 
-        self.mqtt_client = MQTTClient("localhost", 1883)
+        self.mqtt_client = MQTTClient("192.168.0.127", 1883, username="PicoNet", password="geheimespasswort")
         self.mqtt_client.subscribe("Pico1/Eingabe")
         self.mqtt_client.subscribe("Pico2/Eingabe")
         self.mqtt_client.subscribe("Pico3/Eingabe")
