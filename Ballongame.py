@@ -11,11 +11,12 @@ class Ballongame:
     def __init__(self):
         self.logger = logging.getLogger("Ballongame")
         self.logger.setLevel(logging.DEBUG)
-        self.mode: GenericGamemode = EasyMode()
-        self._running = True
 
         self.pi = pigpio.pi()
         GPIO.setmode(GPIO.BCM)
+
+        self.mode: GenericGamemode = EasyMode(self.pi)
+        self._running = True
 
     def run(self):
         self.logger.info("Starting Game Loop!")
