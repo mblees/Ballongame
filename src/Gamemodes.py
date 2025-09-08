@@ -1,6 +1,6 @@
 import logging
 from src.Hardware import Pump, ReleaseValve, LED
-
+from src.MQTT import MQTTClient
 
 class GenericGamemode:
     def __init__(self, logging_name: str, pi):
@@ -10,6 +10,17 @@ class GenericGamemode:
         self.pump = Pump(self.pi)
         self.releaseValve = ReleaseValve(self.pi)
         self.LED = LED(self.pi)
+
+        self.mqtt_client = MQTTClient("localhost", 1883)
+        self.mqtt_client.subscribe("Pico1/Eingabe")
+        self.mqtt_client.subscribe("Pico2/Eingabe")
+        self.mqtt_client.subscribe("Pico3/Eingabe")
+        self.mqtt_client.subscribe("Pico4/Eingabe")
+        self.mqtt_client.set_callback(self.callback)
+
+
+    def callback(self, client, userdata, message):
+        self.logger.info(f"Received a new message on topic '{message.topic}' with message '{message.payload}'")
 
     def run_gameloop(self):
         self.logger.warning("Using generic Gamemode Class. Overwrite this function.")

@@ -22,9 +22,7 @@ class Ballongame:
     def run(self):
         self.logger.info("Starting Game Loop!")
         while self._running:
-            self.mode.print_mode()
-            self.change_mode()
-            time.sleep(2)
+            self.mode.run_gameloop()
 
     def change_mode(self):
         if isinstance(self.mode, EasyMode):

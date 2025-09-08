@@ -1,6 +1,8 @@
 # Currently no Requirements are needed to run the code
 
 rpi_ws281x
+paho-mqtt
 adafruit-circuitpython-neopixel
+pigpio
 
 # sudo apt install python3-rpi.gpio
