@@ -29,7 +29,8 @@ class GenericGamemode:
             if msg.payload.decode() == "0":
                 self.logger.info("Button Pressed")
         elif msg.topic == "Pico3/Eingabe":
-            self.logger.debug(f"{msg.payload.decode()} in topic {msg.topic}")
+            if msg.payload.decode() == "0":
+                self.logger.info("Fan spinning")
         elif msg.topic == "Pico4/Eingabe":
             self.logger.debug(f"{msg.payload.decode()} in topic {msg.topic}")
         else:
