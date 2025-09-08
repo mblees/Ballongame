@@ -19,7 +19,7 @@ class GenericGamemode:
 
     def callback(self, client, userdata, msg):
         if msg.topic == "Pico1/Eingabe":
-            self.logger.debug(f"{msg.payload.decode()} in topic {msg.topic}")
+            self.logger.info("Encoder dreht sich")
         elif msg.topic == "Pico2/Eingabe":
             if msg.payload.decode() == "0":
                 self.logger.info("Button Pressed")
@@ -27,7 +27,7 @@ class GenericGamemode:
             if msg.payload.decode() == "0":
                 self.logger.info("Fan spinning")
         elif msg.topic == "Pico4/Eingabe":
-            self.logger.debug(f"{msg.payload.decode()} in topic {msg.topic}")
+            self.logger.info("Controller geschüttelt")
         else:
             pass
 

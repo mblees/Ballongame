@@ -3,6 +3,8 @@
 rpi_ws281x
 paho-mqtt
 adafruit-circuitpython-neopixel
+adafruit-blinka
 pigpio
+
 
 # sudo apt install python3-rpi.gpio
