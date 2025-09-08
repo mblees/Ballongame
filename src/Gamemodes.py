@@ -24,14 +24,14 @@ class GenericGamemode:
 
     def callback(self, client, userdata, msg):
         if msg.topic == "Pico1/Eingabe":
-            self.logger.debug(f"{msg.payload.decode("utf-8")} in topic {msg.topic}")
+            self.logger.debug(f"{msg.payload.decode()} in topic {msg.topic}")
         elif msg.topic == "Pico2/Eingabe":
-            if msg.payload.decode("utf-8") == "0":
+            if msg.payload.decode() == "0":
                 self.logger.info("Button Pressed")
         elif msg.topic == "Pico3/Eingabe":
-            self.logger.debug(f"{msg.payload.decode("utf-8")} in topic {msg.topic}")
+            self.logger.debug(f"{msg.payload.decode()} in topic {msg.topic}")
         elif msg.topic == "Pico4/Eingabe":
-            self.logger.debug(f"{msg.payload.decode("utf-8")} in topic {msg.topic}")
+            self.logger.debug(f"{msg.payload.decode()} in topic {msg.topic}")
         else:
             pass
 
