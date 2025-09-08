@@ -1,7 +1,8 @@
 import logging
 from src.Hardware import Pump, ReleaseValve, LED
 import paho.mqtt.client as mqtt
-
+import time
+import socket
 
 class GenericGamemode:
     def __init__(self, logging_name: str, pi):
@@ -14,6 +15,7 @@ class GenericGamemode:
         self.logger.debug("Initializing Game Mode!")
 
         self.mqtt_client = mqtt.Client()
+        self.wait_for_network()
         self.init_mqtt_client()
         self.led.set_color((255, 0, 0))
         self.led.turn_on()
@@ -44,13 +46,32 @@ class GenericGamemode:
 
     def init_mqtt_client(self):
         self.mqtt_client.username_pw_set(username="PicoNet", password="geheimespasswort")
-        self.mqtt_client.connect("192.168.0.127", 1883, 60)
+        connected = False
+        while not connected:
+            try:
+                self.mqtt_client.connect("192.168.0.127", 1883, 60)
+                connected = True
+            except Exception as e:
+                print(f"Connection failed: {e}. Retrying in 5 seconds...")
+                time.sleep(5)
+
         self.mqtt_client.on_message = self.callback
         self.mqtt_client.subscribe("Pico1/Eingabe")
         self.mqtt_client.subscribe("Pico2/Eingabe")
         self.mqtt_client.subscribe("Pico3/Eingabe")
         self.mqtt_client.subscribe("Pico4/Eingabe")
         self.mqtt_client.loop_start()
+
+    def wait_for_network(self, host="8.8.8.8", port=53, timeout=3, retries=10):
+        """Wait until the network is reachable."""
+        while True:
+            try:
+                socket.create_connection((host, port), timeout=timeout)
+                self.logger.info("Network is reachable.")
+                return True
+            except OSError:
+                self.logger.warning(f"Network unreachable, retrying...")
+                time.sleep(3)
 
 
 class EasyMode(GenericGamemode):
