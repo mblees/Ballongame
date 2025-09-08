@@ -32,7 +32,7 @@ class ReleaseValve:
 class LED:
     def __init__(self, pi):
         self.logger = logging.getLogger("LED")
-        self.pin = board.D23
+        self.pin = board.D18
         self.pi = pi
         self.pixels = neopixel.NeoPixel(self.pin, 1, auto_write=True)
         self._color = (0, 0, 0)
