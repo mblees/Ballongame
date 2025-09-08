@@ -5,6 +5,7 @@ from logging_config import activate_logging_config
 
 from src.Gamemodes import GenericGamemode, EasyMode, MediumMode, HardMode
 import RPi.GPIO as GPIO
+import pigpio
 
 
 class Ballongame:
