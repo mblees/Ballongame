@@ -15,7 +15,7 @@ class GenericGamemode:
         self.mqtt_client = mqtt.Client()
         self.mqtt_client.username_pw_set(username="PicoNet", password="geheimespasswort")
         self.mqtt_client.connect("192.168.0.127", 1883, 60)
-        self.mqtt_client.on_message(self.callback)
+        self.mqtt_client.on_message = self.callback
         self.mqtt_client.subscribe("Pico1/Eingabe")
         self.mqtt_client.subscribe("Pico2/Eingabe")
         self.mqtt_client.subscribe("Pico3/Eingabe")
