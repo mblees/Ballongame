@@ -15,7 +15,7 @@ class GenericGamemode:
         self.logger.debug("Initializing Game Mode!")
 
         self.mqtt_client = mqtt.Client()
-        self.wait_for_network()
+        # self.wait_for_network()
         self.init_mqtt_client()
         self.led.set_color((255, 0, 0))
         self.led.turn_on()
