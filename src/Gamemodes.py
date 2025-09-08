@@ -24,7 +24,7 @@ class GenericGamemode:
         if msg.payload.decode() == "0":
             if msg.topic == "Pico1/Eingabe":
                 self.logger.info("Encoder dreht sich")
-                self.led.set_color((255, 0, 0))
+                self.led.set_color((255, 255, 0))
             elif msg.topic == "Pico2/Eingabe":
                 self.logger.info("Button Pressed")
                 self.led.set_color((0, 255, 0))
