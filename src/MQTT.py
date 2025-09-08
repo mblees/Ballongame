@@ -30,3 +30,4 @@ class MQTTClient:
     def start(self):
         self.client.connect(self.broker, self.port, 60)
         self.client.loop_forever()
+

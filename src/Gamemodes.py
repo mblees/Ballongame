@@ -17,6 +17,7 @@ class GenericGamemode:
         self.mqtt_client.subscribe("Pico3/Eingabe")
         self.mqtt_client.subscribe("Pico4/Eingabe")
         self.mqtt_client.set_callback(self.callback)
+        self.mqtt_client.client.publish("Pico1/Eingabe", "Test")
 
 
     def callback(self, client, userdata, message):
