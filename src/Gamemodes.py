@@ -51,8 +51,9 @@ class GenericGamemode:
             try:
                 self.mqtt_client.connect("192.168.4.1", 1883, 60)
                 connected = True
-            except Exception as e:
-                print(f"Connection failed: {e}. Retrying in 5 seconds...")
+                self.logger.info("Connected to MQTT broker.")
+            except Exception as _:
+                print(f"Connection failed: Retrying in 5 seconds...")
                 time.sleep(5)
 
         self.mqtt_client.on_message = self.callback
