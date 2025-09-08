@@ -30,26 +30,31 @@ class ReleaseValve:
 
 
 class LED:
-    def __init__(self, pi):
+    def __init__(self, pi, num_leds: int = 1):
         self.logger = logging.getLogger("LED")
         self.pin = board.D18
         self.pi = pi
-        self.pixels = neopixel.NeoPixel(self.pin, 100, auto_write=True)
+        self.num_leds = num_leds
+        self.pixels = neopixel.NeoPixel(self.pin, num_leds, auto_write=True)
         self._color = (0, 0, 0)
         self._state = False
 
     def set_color(self, color: tuple[int, int, int]):
         self._color = color
         if self._state:
-            self.pixels[0] = color
+            for i in range(self.num_leds):
+                self.pixels[i] = color
 
     def turn_off(self):
         self._state = False
-        self.pixels[0] = (0, 0, 0)
+        for i in range(self.num_leds):
+            self.pixels[i] = (0, 0, 0)
 
     def turn_on(self):
         self._state = True
-        self.pixels[0] = self._color
+        for i in range(self.num_leds):
+            self.pixels[i] = self._color
+
 
 
 class Speaker:
