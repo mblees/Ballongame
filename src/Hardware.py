@@ -40,6 +40,8 @@ class LED:
         self._state = False
 
     def set_color(self, color: tuple[int, int, int]):
+        if self._color == color:
+            return  # No need to set the same color again
         self._color = color
         if self._state:
             for i in range(self.num_leds):
@@ -54,7 +56,6 @@ class LED:
         self._state = True
         for i in range(self.num_leds):
             self.pixels[i] = self._color
-
 
 
 class Speaker:
