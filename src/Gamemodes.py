@@ -164,3 +164,4 @@ class HardMode(GenericGamemode):
             return 255, 0, 255
         else:
             self.logger.warning(f"Player {player} is not matched with a color.")
+            raise NotImplementedError
