@@ -3,6 +3,8 @@ from src.Hardware import Pump, ReleaseValve, LED
 import paho.mqtt.client as mqtt
 import time
 import socket
+import random
+
 
 class GenericGamemode:
     def __init__(self, logging_name: str, pi):
@@ -20,20 +22,24 @@ class GenericGamemode:
         self.led.set_color((255, 0, 0))
         self.led.turn_on()
 
+        self.inputs: dict[int, bool] = {}
+        self.reset_input_dict()
+
     def callback(self, client, userdata, msg):
-        if msg.payload.decode() == "0":
+        payload = msg.payload.decode()
+        if payload == "0":
             if msg.topic == "Pico1/Eingabe":
-                self.logger.info("Encoder dreht sich")
-                self.led.set_color((255, 255, 0))
+                self.logger.debug("Encoder dreht sich")
+                self.inputs[1] = True
             elif msg.topic == "Pico2/Eingabe":
-                self.logger.info("Button Pressed")
-                self.led.set_color((0, 255, 0))
+                self.logger.debug("Button Pressed")
+                self.inputs[2] = True
             elif msg.topic == "Pico3/Eingabe":
-                self.logger.info("Fan spinning")
-                self.led.set_color((0, 0, 255))
+                self.logger.debug("Fan spinning")
+                self.inputs[3] = True
             elif msg.topic == "Pico4/Eingabe":
-                self.logger.info("Controller geschüttelt")
-                self.led.set_color((255, 0, 255))
+                self.logger.debug("Controller geschüttelt")
+                self.inputs[4] = True
             else:
                 pass
 
@@ -74,13 +80,27 @@ class GenericGamemode:
                 self.logger.warning(f"Network unreachable, retrying...")
                 time.sleep(3)
 
+    def reset_input_dict(self):
+        self.inputs = {1: False, 2: False, 3: False, 4: False}
+
 
 class EasyMode(GenericGamemode):
     def __init__(self, pi):
         super().__init__("Easy Mode", pi)
 
     def run_gameloop(self):
-        pass
+        input_detected = False
+        for key in self.inputs:
+            if self.inputs[key]:
+                input_detected = True
+        if input_detected:
+            self.reset_input_dict()
+            self.led.set_color((0, 255, 0))
+            self.pump.open()
+            time.sleep(1)
+            self.pump.close()
+        else:
+            self.led.set_color((255, 0, 0))
 
 
 class MediumMode(GenericGamemode):
@@ -88,12 +108,59 @@ class MediumMode(GenericGamemode):
         super().__init__("Medium Mode", pi)
 
     def run_gameloop(self):
-        pass
+        input_amount = 0
+        for key in self.inputs:
+            if self.inputs[key]:
+                input_amount += 1
+        if input_amount > 3:
+            self.reset_input_dict()
+            self.led.set_color((0, 255, 0))
+            self.pump.open()
+            time.sleep(2)
+            self.pump.close()
+        else:
+            self.led.set_color((255, 0, 0))
 
 
 class HardMode(GenericGamemode):
     def __init__(self, pi):
         super().__init__("Hard Mode", pi)
+        self.last_player = 0
 
     def run_gameloop(self):
-        pass
+        random_player = self.choose_random_player()
+        self.led.set_color(self.get_color_by_player(random_player))
+        time.sleep(2)
+        if self.inputs[random_player]:
+            self.led.set_color((0, 255, 0))
+            self.pump.open()
+            time.sleep(2)
+            self.pump.close()
+            self.reset_input_dict()
+        else:
+            self.led.set_color((255, 0, 0))
+            time.sleep(0.3)
+            self.led.turn_off()
+            time.sleep(0.3)
+            self.led.turn_on()
+            time.sleep(0.3)
+            self.reset_input_dict()
+
+    def choose_random_player(self) -> int:
+        players = [1, 2, 3, 4]
+        players.remove(self.last_player)
+        random_player = random.choice(players)
+        self.last_player = random_player
+        return random_player
+
+    def get_color_by_player(self, player: int) -> tuple[int, int, int]:
+        if player == 1:
+            return 255, 255, 0
+        elif player == 2:
+            return 0, 255, 0
+        elif player == 3:
+            return 0, 255, 255
+        elif player == 4:
+            return 255, 0, 255
+        else:
+            self.logger.warning(f"Player {player} is not matched with a color.")
