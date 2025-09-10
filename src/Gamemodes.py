@@ -148,7 +148,8 @@ class HardMode(GenericGamemode):
 
     def choose_random_player(self) -> int:
         players = [1, 2, 3, 4]
-        players.remove(self.last_player)
+        if self.last_player in players:
+            players.remove(self.last_player)
         random_player = random.choice(players)
         self.last_player = random_player
         return random_player
