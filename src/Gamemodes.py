@@ -22,26 +22,30 @@ class GenericGamemode:
         self.led.set_color((255, 0, 0))
         self.led.turn_on()
 
+        self.previous_payload = {}
         self.inputs: dict[int, bool] = {}
         self.reset_input_dict()
 
     def callback(self, client, userdata, msg):
         payload = msg.payload.decode()
-        if payload == "0":
-            if msg.topic == "Pico1/Eingabe":
+        topic = msg.topic
+
+        if self.previous_payload.get(topic) == "1" and payload == "0":
+            if topic == "Pico1/Eingabe":
                 self.logger.debug("Encoder dreht sich")
                 self.inputs[1] = True
-            elif msg.topic == "Pico2/Eingabe":
+            elif topic == "Pico2/Eingabe":
                 self.logger.debug("Button Pressed")
                 self.inputs[2] = True
-            elif msg.topic == "Pico3/Eingabe":
+            elif topic == "Pico3/Eingabe":
                 self.logger.debug("Fan spinning")
                 self.inputs[3] = True
-            elif msg.topic == "Pico4/Eingabe":
+            elif topic == "Pico4/Eingabe":
                 self.logger.debug("Controller geschüttelt")
                 self.inputs[4] = True
-            else:
-                pass
+
+        # Update the last payload for this topic
+        self.previous_payload[topic] = payload
 
     def run_gameloop(self):
         self.logger.warning("Using generic Gamemode Class. Overwrite this function.")
@@ -133,9 +137,8 @@ class HardMode(GenericGamemode):
         time.sleep(2)
         if self.inputs[random_player]:
             self.led.set_color((0, 255, 0))
-            self.led.sinus()
             self.pump.open()
-            time.sleep(2)
+            self.led.sinus(cycles=5)
             self.pump.close()
             self.reset_input_dict()
         else:
