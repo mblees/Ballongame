@@ -44,7 +44,7 @@ class LED:
         self.pixels = neopixel.NeoPixel(self.pin, num_leds, auto_write=True)
         self._color = (0, 0, 0)
         self._state = False
-        self._brightness = 0.6  # default full brightness
+        self._brightness = 0.3  # default full brightness
 
     def _apply_color(self):
         if self._state:

@@ -95,11 +95,7 @@ class EasyMode(GenericGamemode):
 
     def run_gameloop(self):
         if self.first_cycle:
-            self.led.set_color((0, 255, 0))
-            self.led.sparkle()
-            self.led.turn_off()
-            time.sleep(1)
-            self.first_cycle = False
+            self.intro()
 
         input_detected = False
         for key in self.inputs:
@@ -109,10 +105,16 @@ class EasyMode(GenericGamemode):
             self.reset_input_dict()
             self.led.set_color((0, 255, 0))
             self.pump.open()
-            time.sleep(1)
+            self.led.sinus(period=0.33, cycles=3)
             self.pump.close()
         else:
             self.led.set_color((255, 0, 0))
+
+    def intro(self):
+        self.led.set_color((0, 255, 0))
+        self.led.sparkle()
+        self.led.set_color((255, 0, 0))
+        self.first_cycle = False
 
 
 class MediumMode(GenericGamemode):
@@ -121,24 +123,26 @@ class MediumMode(GenericGamemode):
 
     def run_gameloop(self):
         if self.first_cycle:
-            self.led.set_color((255, 255, 0))
-            self.led.sparkle()
-            self.led.turn_off()
-            time.sleep(1)
-            self.first_cycle = False
+            self.intro()
 
         input_amount = 0
         for key in self.inputs:
             if self.inputs[key]:
                 input_amount += 1
-        if input_amount > 3:
+        if input_amount > 2:
             self.reset_input_dict()
             self.led.set_color((0, 255, 0))
             self.pump.open()
-            time.sleep(2)
+            self.led.sinus()
             self.pump.close()
         else:
             self.led.set_color((255, 0, 0))
+
+    def intro(self):
+        self.led.set_color((0, 0, 255))
+        self.led.sparkle()
+        self.led.set_color((255, 0, 0))
+        self.first_cycle = False
 
 
 class HardMode(GenericGamemode):
@@ -148,11 +152,7 @@ class HardMode(GenericGamemode):
 
     def run_gameloop(self):
         if self.first_cycle:
-            self.led.set_color((255, 0, 0))
-            self.led.sparkle()
-            self.led.turn_off()
-            time.sleep(1)
-            self.first_cycle = False
+            self.intro()
 
         random_player = self.choose_random_player()
         self.led.set_color(self.get_color_by_player(random_player))
@@ -167,6 +167,10 @@ class HardMode(GenericGamemode):
             self.led.set_color((255, 0, 0))
             self.led.sinus()
 
+    def intro(self):
+        self.led.set_color((255, 0, 0))
+        self.led.sparkle()
+        self.first_cycle = False
 
     def choose_random_player(self) -> int:
         players = [1, 2, 3, 4]
