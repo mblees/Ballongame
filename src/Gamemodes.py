@@ -112,7 +112,7 @@ class EasyMode(GenericGamemode):
 
     def intro(self):
         self.led.set_color((0, 255, 0))
-        self.led.sparkle()
+        self.led.load_bar()
         self.led.set_color((255, 0, 0))
         self.first_cycle = False
 
@@ -140,7 +140,7 @@ class MediumMode(GenericGamemode):
 
     def intro(self):
         self.led.set_color((0, 0, 255))
-        self.led.sparkle()
+        self.led.load_bar()
         self.led.set_color((255, 0, 0))
         self.first_cycle = False
 
@@ -169,7 +169,7 @@ class HardMode(GenericGamemode):
 
     def intro(self):
         self.led.set_color((255, 0, 0))
-        self.led.sparkle()
+        self.led.load_bar()
         self.first_cycle = False
 
     def choose_random_player(self) -> int:
