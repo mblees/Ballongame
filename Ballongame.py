@@ -27,7 +27,7 @@ class Ballongame:
         while self._running:
             self.mode.run_gameloop()
 
-    def change_mode(self):
+    def change_mode(self, _gpio, _level, _tick):
         if isinstance(self.mode, EasyMode):
             self.mode = MediumMode(self.pi)
             self.logger.info("Changing Mode to MediumMode!")
