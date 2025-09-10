@@ -18,7 +18,7 @@ class Ballongame:
         GPIO.setmode(GPIO.BCM)
 
         self.mode: GenericGamemode = EasyMode(self.pi)
-        self.mode_button = Button(self.pi, 27)
+        self.mode_button = Button(self.pi, 22)
         self.mode_button.enable_interrupt(self.change_mode)
         self._running = True
 
