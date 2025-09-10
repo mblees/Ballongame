@@ -140,7 +140,7 @@ class HardMode(GenericGamemode):
             self.reset_input_dict()
         else:
             self.led.set_color((255, 0, 0))
-            self.led.blink()
+            self.led.blink(amount=1000)
 
 
     def choose_random_player(self) -> int:
