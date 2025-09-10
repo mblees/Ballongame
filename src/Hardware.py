@@ -42,24 +42,37 @@ class LED:
         self.pixels = neopixel.NeoPixel(self.pin, num_leds, auto_write=True)
         self._color = (0, 0, 0)
         self._state = False
+        self._brightness = 1.0  # default full brightness
+
+    def _apply_color(self):
+        """Apply the current color and brightness to all LEDs."""
+        if self._state:
+            scaled = tuple(int(c * self._brightness) for c in self._color)
+            self.pixels[:] = [scaled] * self.num_leds
+        else:
+            self.pixels[:] = [(0, 0, 0)] * self.num_leds
 
     def set_color(self, color: tuple[int, int, int]):
         if self._color == color:
-            return  # No need to set the same color again
+            return
         self._color = color
-        if self._state:
-            for i in range(self.num_leds):
-                self.pixels[i] = color
-
-    def turn_off(self):
-        self._state = False
-        for i in range(self.num_leds):
-            self.pixels[i] = (0, 0, 0)
+        self._apply_color()
 
     def turn_on(self):
         self._state = True
-        for i in range(self.num_leds):
-            self.pixels[i] = self._color
+        self._apply_color()
+
+    def turn_off(self):
+        self._state = False
+        self._apply_color()
+
+    def set_brightness(self, brightness: float):
+        """brightness: 0.0 (off) to 1.0 (full)"""
+        brightness = max(0.0, min(1.0, brightness))
+        if self._brightness == brightness:
+            return
+        self._brightness = brightness
+        self._apply_color()
 
 
 class Speaker:
