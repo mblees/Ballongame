@@ -3,6 +3,8 @@ import board
 import neopixel
 import RPi.GPIO as GPIO
 import pigpio
+import threading
+import time
 
 
 class Pump:
@@ -76,10 +78,25 @@ class Button:
         self.logger = logging.getLogger("Button")
         self.io = io
         self.pi = pi
+        self._stop_event = threading.Event()
 
     def is_pressed(self) -> bool:
         return self.pi.read(self.io) == 1
 
-    def enable_interrupt(self, callback):
-        self.pi.callback(self.io, pigpio.RISING_EDGE, callback)
+    def enable_interrupt(self, callback, poll_interval: float = 0.5):
+        def _poll():
+            last_state = self.is_pressed()
+            while not self._stop_event.is_set():
+                state = self.is_pressed()
+                if state and not last_state:  # rising edge
+                    callback()
+                last_state = state
+                time.sleep(poll_interval)
 
+        self._stop_event.clear()
+        interrupt_thread = threading.Thread(target=_poll, daemon=True)
+        interrupt_thread.start()
+        return interrupt_thread
+
+    def disable_interrupt(self):
+        self._stop_event.set()
