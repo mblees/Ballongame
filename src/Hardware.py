@@ -86,7 +86,7 @@ class LED:
             frame = []
             for _ in range(self.num_leds):
                 if random.random() < chance:
-                    sparkle_color = tuple(min(255, int(c * random.uniform(0.5, 1.0))) for c in self._color)
+                    sparkle_color = tuple(min(255, int(c * random.uniform(0, self._brightness))) for c in self._color)
                     frame.append(sparkle_color)
                 else:
                     frame.append(base_color)

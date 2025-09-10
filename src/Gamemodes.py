@@ -25,6 +25,7 @@ class GenericGamemode:
         self.previous_payload = {}
         self.inputs: dict[int, bool] = {}
         self.reset_input_dict()
+        self.first_cycle = True
 
     def callback(self, client, userdata, msg):
         payload = msg.payload.decode()
@@ -93,6 +94,13 @@ class EasyMode(GenericGamemode):
         super().__init__("Easy Mode", pi)
 
     def run_gameloop(self):
+        if self.first_cycle:
+            self.led.set_color((0, 255, 0))
+            self.led.sparkle()
+            self.led.turn_off()
+            time.sleep(1)
+            self.first_cycle = False
+
         input_detected = False
         for key in self.inputs:
             if self.inputs[key]:
@@ -112,6 +120,13 @@ class MediumMode(GenericGamemode):
         super().__init__("Medium Mode", pi)
 
     def run_gameloop(self):
+        if self.first_cycle:
+            self.led.set_color((255, 255, 0))
+            self.led.sparkle()
+            self.led.turn_off()
+            time.sleep(1)
+            self.first_cycle = False
+
         input_amount = 0
         for key in self.inputs:
             if self.inputs[key]:
@@ -132,6 +147,13 @@ class HardMode(GenericGamemode):
         self.last_player = 0
 
     def run_gameloop(self):
+        if self.first_cycle:
+            self.led.set_color((255, 0, 0))
+            self.led.sparkle()
+            self.led.turn_off()
+            time.sleep(1)
+            self.first_cycle = False
+
         random_player = self.choose_random_player()
         self.led.set_color(self.get_color_by_player(random_player))
         time.sleep(2)

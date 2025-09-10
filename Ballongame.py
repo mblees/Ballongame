@@ -30,18 +30,12 @@ class Ballongame:
     def change_mode(self):
         if isinstance(self.mode, EasyMode):
             self.mode = MediumMode(self.pi)
-            self.mode.led.set_color((0, 255, 0))
-            self.mode.led.sparkle()
             self.logger.info("Changing Mode to MediumMode!")
         elif isinstance(self.mode, MediumMode):
             self.mode = HardMode(self.pi)
-            self.mode.led.set_color((255, 255, 0))
-            self.mode.led.sparkle()
             self.logger.info("Changing Mode to HardMode!")
         elif isinstance(self.mode, HardMode):
             self.mode = EasyMode(self.pi)
-            self.mode.led.set_color((255, 0, 0))
-            self.mode.led.sparkle()
             self.logger.info("Changing Mode to EasyMode!")
 
 
