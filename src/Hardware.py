@@ -81,5 +81,5 @@ class Button:
         return self.pi.read(self.io) == 1
 
     def enable_interrupt(self, callback):
-        self.pi.callback(self.io, pigpio.EITHER_EDGE, callback)
+        self.pi.callback(self.io, pigpio.RISING_EDGE, callback)
 
