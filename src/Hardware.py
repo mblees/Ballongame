@@ -6,6 +6,7 @@ import pigpio
 import threading
 import time
 import math
+import random
 
 
 class Pump:
@@ -75,6 +76,22 @@ class LED:
                 self._apply_color()
                 time.sleep(period / steps)
         self.set_brightness(brightness_before)
+
+    def sparkle(self, duration: float = 2.0, chance: float = 0.2, interval: float = 0.05):
+        end_time = time.time() + duration
+        self._state = True
+        base_color = tuple(int(c * self._brightness) for c in self._color)
+
+        while time.time() < end_time:
+            frame = []
+            for _ in range(self.num_leds):
+                if random.random() < chance:
+                    sparkle_color = tuple(min(255, int(c * random.uniform(0.5, 1.0))) for c in self._color)
+                    frame.append(sparkle_color)
+                else:
+                    frame.append(base_color)
+            self.pixels[:] = frame
+            time.sleep(interval)
 
     def turn_on(self):
         self._state = True
