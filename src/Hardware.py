@@ -93,7 +93,7 @@ class LED:
             self.pixels[:] = frame
             time.sleep(interval)
 
-    def load_bar(self, delay: float = 0.1):
+    def load_bar(self, delay: float = 0.025):
         self._state = True
         r, g, b = self._color
         r *= self._brightness
