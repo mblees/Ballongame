@@ -66,6 +66,7 @@ class LED:
             time.sleep(speed)
 
     def sinus(self, period: float = 0.5, cycles: int = 3, steps: int = 50):
+        brightness_before = self._brightness
         self._state = True
         for _ in range(cycles):
             for i in range(steps):
@@ -73,6 +74,7 @@ class LED:
                 self._brightness = 0.5 * (1 - math.cos(angle))  # sine wave 0..1
                 self._apply_color()
                 time.sleep(period / steps)
+        self.set_brightness(brightness_before)
 
     def turn_on(self):
         self._state = True
