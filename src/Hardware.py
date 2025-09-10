@@ -80,7 +80,7 @@ class LED:
     def sparkle(self, duration: float = 3.0, chance: float = 0.2, interval: float = 0.05):
         end_time = time.time() + duration
         self._state = True
-        base_color = tuple(int(c * self._brightness) for c in self._color)
+        base_color = (0, 0, 0)
 
         while time.time() < end_time:
             frame = []
