@@ -88,7 +88,7 @@ class Button:
             last_state = self.is_pressed()
             while not self._stop_event.is_set():
                 state = self.is_pressed()
-                if state and not last_state:  # rising edge
+                if state != last_state:
                     callback()
                 last_state = state
                 time.sleep(poll_interval)
