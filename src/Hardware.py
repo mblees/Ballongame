@@ -77,7 +77,7 @@ class LED:
                 time.sleep(period / steps)
         self.set_brightness(brightness_before)
 
-    def sparkle(self, duration: float = 2.0, chance: float = 0.2, interval: float = 0.05):
+    def sparkle(self, duration: float = 3.0, chance: float = 0.2, interval: float = 0.05):
         end_time = time.time() + duration
         self._state = True
         base_color = tuple(int(c * self._brightness) for c in self._color)
