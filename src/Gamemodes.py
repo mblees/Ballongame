@@ -133,18 +133,15 @@ class HardMode(GenericGamemode):
         time.sleep(2)
         if self.inputs[random_player]:
             self.led.set_color((0, 255, 0))
+            self.led.blink()
             self.pump.open()
             time.sleep(2)
             self.pump.close()
             self.reset_input_dict()
         else:
             self.led.set_color((255, 0, 0))
-            time.sleep(0.3)
-            self.led.turn_off()
-            time.sleep(0.3)
-            self.led.turn_on()
-            time.sleep(0.3)
-            self.reset_input_dict()
+            self.led.blink()
+
 
     def choose_random_player(self) -> int:
         players = [1, 2, 3, 4]
@@ -158,7 +155,7 @@ class HardMode(GenericGamemode):
         if player == 1:
             return 255, 255, 0
         elif player == 2:
-            return 0, 255, 0
+            return 0, 0, 255
         elif player == 3:
             return 0, 255, 255
         elif player == 4:

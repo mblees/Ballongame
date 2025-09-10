@@ -42,10 +42,9 @@ class LED:
         self.pixels = neopixel.NeoPixel(self.pin, num_leds, auto_write=True)
         self._color = (0, 0, 0)
         self._state = False
-        self._brightness = 1.0  # default full brightness
+        self._brightness = 0.6  # default full brightness
 
     def _apply_color(self):
-        """Apply the current color and brightness to all LEDs."""
         if self._state:
             scaled = tuple(int(c * self._brightness) for c in self._color)
             self.pixels[:] = [scaled] * self.num_leds
@@ -58,6 +57,13 @@ class LED:
         self._color = color
         self._apply_color()
 
+    def blink(self, speed: float = 0.1, amount: int = 3):
+        for i in range(amount):
+            self.turn_off()
+            time.sleep(speed)
+            self.turn_on()
+            time.sleep(speed)
+
     def turn_on(self):
         self._state = True
         self._apply_color()
@@ -67,7 +73,6 @@ class LED:
         self._apply_color()
 
     def set_brightness(self, brightness: float):
-        """brightness: 0.0 (off) to 1.0 (full)"""
         brightness = max(0.0, min(1.0, brightness))
         if self._brightness == brightness:
             return
