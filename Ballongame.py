@@ -30,10 +30,13 @@ class Ballongame:
     def change_mode(self):
         if isinstance(self.mode, EasyMode):
             self.mode = MediumMode(self.pi)
+            self.logger.info("Changing Mode to MediumMode!")
         elif isinstance(self.mode, MediumMode):
             self.mode = HardMode(self.pi)
+            self.logger.info("Changing Mode to HardMode!")
         elif isinstance(self.mode, HardMode):
             self.mode = EasyMode(self.pi)
+            self.logger.info("Changing Mode to EasyMode!")
 
 
 if __name__ == "__main__":
