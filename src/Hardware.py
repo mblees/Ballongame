@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 import pigpio
 import threading
 import time
+import math
 
 
 class Pump:
@@ -63,6 +64,15 @@ class LED:
             time.sleep(speed)
             self.turn_on()
             time.sleep(speed)
+
+    def sinus(self, period: float = 0.5, cycles: int = 3, steps: int = 50):
+        self._state = True
+        for _ in range(cycles):
+            for i in range(steps):
+                angle = (i / steps) * 2 * math.pi
+                self._brightness = 0.5 * (1 - math.cos(angle))  # sine wave 0..1
+                self._apply_color()
+                time.sleep(period / steps)
 
     def turn_on(self):
         self._state = True
