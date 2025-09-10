@@ -6,6 +6,7 @@ from logging_config import activate_logging_config
 from src.Gamemodes import GenericGamemode, EasyMode, MediumMode, HardMode
 import RPi.GPIO as GPIO
 import pigpio
+from src.Hardware import Button
 
 
 class Ballongame:
@@ -17,6 +18,8 @@ class Ballongame:
         GPIO.setmode(GPIO.BCM)
 
         self.mode: GenericGamemode = EasyMode(self.pi)
+        self.mode_button = Button(27, self.pi)
+        self.mode_button.enable_interrupt(self.change_mode)
         self._running = True
 
     def run(self):

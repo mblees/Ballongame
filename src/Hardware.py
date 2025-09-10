@@ -67,3 +67,16 @@ class Speaker:
 
     def stop_sound(self):
         pass
+
+
+class Button:
+    def __init__(self, pi, io: int):
+        self.logger = logging.getLogger("Button")
+        self.io = io
+        self.pi = pi
+
+    def is_pressed(self) -> bool:
+        return self.pi.read(self.io) == 1
+
+    def enable_interrupt(self, callback):
+        self.pi.add_interrupt_callback(self.io, callback)
