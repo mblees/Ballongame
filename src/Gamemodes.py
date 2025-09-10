@@ -13,7 +13,7 @@ class GenericGamemode:
         self.pi = pi
         self.pump = Pump(self.pi)
         self.releaseValve = ReleaseValve(self.pi)
-        self.led = LED(self.pi, num_leds=100)
+        self.led = LED(self.pi, num_leds=75)
         self.logger.debug("Initializing Game Mode!")
 
         self.mqtt_client = mqtt.Client()
