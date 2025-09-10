@@ -1,6 +1,8 @@
 import logging
 import board
 import neopixel
+import RPi.GPIO as GPIO
+import pigpio
 
 
 class Pump:
