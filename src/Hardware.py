@@ -95,10 +95,13 @@ class LED:
 
     def load_bar(self, delay: float = 0.05):
         self._state = True
+        r, g, b = self._color
+        r *= self._brightness
+        g *= self._brightness
+        b *= self._brightness
         self.set_color((0, 0, 0))
         for i in range(self.num_leds):
-            scaled_color = tuple(int(c * self._brightness) for c in self._color)
-            self.pixels[i] = scaled_color
+            self.pixels[i] = (r, g, b)
             time.sleep(delay)
 
     def turn_on(self):
