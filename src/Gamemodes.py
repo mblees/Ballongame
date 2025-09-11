@@ -21,6 +21,7 @@ class GenericGamemode:
         while True:
             pressure = self.pressure_sensor.read_pressure()
             self.logger.debug(f"Pressure: {pressure} psi")
+            time.sleep(1)
 
         self.mqtt_client = mqtt.Client()
         # self.wait_for_network()
