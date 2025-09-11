@@ -213,7 +213,7 @@ class MiuzeiDigitalServo:  # 20kg Servo
 
 
 class PressureSensor:
-    def __init__(self, channel: int, pressure_max: float = 10, adc_gain: int = 1, v_ref: float = 5.0):
+    def __init__(self, channel: int, pressure_max: float = 2, adc_gain: int = 1, v_ref: float = 5.0):
         self.logger = logging.getLogger("DruckSensor")
         self.channel = channel
         self.pressure_max = pressure_max
