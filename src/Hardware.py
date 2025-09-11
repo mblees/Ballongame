@@ -218,7 +218,7 @@ class PressureSensor:
         self.channel = channel
         self.pressure_max = pressure_max
         self.v_ref = v_ref
-        self.adc = Adafruit_ADS1x15.ADS1115()
+        self.adc = Adafruit_ADS1x15.ADS1115(address=0x48)
         self.gain = adc_gain
 
         self.adc_max = 32767  # 16-bit signed
