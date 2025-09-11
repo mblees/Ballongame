@@ -111,10 +111,10 @@ class EasyMode(GenericGamemode):
             self.pump.open()
             self.led.sinus(period=0.33, cycles=3)
             self.pump.close()
-            self.pressure_sensor.read_pressure()
+            # self.pressure_sensor.read_pressure()
         else:
             self.led.set_color((255, 0, 0))
-            # self.releaseValve.open()
+            self.releaseValve.open()
 
     def intro(self):
         self.led.set_color((0, 255, 0))
