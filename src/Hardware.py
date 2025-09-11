@@ -137,6 +137,7 @@ class Button:
         self.io = io
         self.pi = pi
         self._stop_event = threading.Event()
+        self.pi.set_mode(self.io, 0)  # 0 = INPUT
 
     def is_pressed(self) -> bool:
         return self.pi.read(self.io) == 1
