@@ -172,6 +172,9 @@ class MiuzeiDigitalServo:  # 20kg Servo
         self.max_pulse = max_pulse
         self.current_angle = None
 
+        self.eject_angle = 90
+        self.normal_angle = 180
+
         # Set GPIO as output (pigpio handles PWM on it)
         self.pi.set_mode(self.io, 1)  # 1 = OUTPUT
 
@@ -193,3 +196,9 @@ class MiuzeiDigitalServo:  # 20kg Servo
     def stop(self):
         self.logger.debug("Stopping servo PWM output")
         self.pi.set_servo_pulsewidth(self.io, 0)
+
+    def eject(self):
+        self.rotate_to(self.eject_angle)
+
+    def reset(self):
+        self.rotate_to(self.normal_angle)
