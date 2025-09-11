@@ -182,6 +182,7 @@ class MiuzeiDigitalServo:  # 20kg Servo
         return pulse
 
     def rotate_to(self, angle: float):
+        self.logger.debug(f"moving servo to angle {angle}")
         pulse = self._angle_to_pulse(angle)
         self.logger.debug(f"Rotating to {angle:.1f}° → pulse {pulse}µs")
         self.pi.set_servo_pulsewidth(self.io, pulse)
