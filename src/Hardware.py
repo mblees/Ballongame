@@ -187,7 +187,7 @@ class MiuzeiDigitalServo:  # 20kg Servo
         self.logger.debug(f"Rotating to {angle:.1f}° → pulse {pulse}µs")
         self.pi.set_servo_pulsewidth(self.io, pulse)
         self.current_angle = angle
-        time.sleep(0.5)  # give servo time to move
+        time.sleep(1)  # give servo time to move
         self.stop()
 
     def stop(self):
