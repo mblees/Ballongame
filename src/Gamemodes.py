@@ -100,13 +100,12 @@ class EasyMode(GenericGamemode):
         if self.first_cycle:
             self.intro()
 
-        self.releaseValve.open()
-
         input_detected = False
         for key in self.inputs:
             if self.inputs[key]:
                 input_detected = True
         if input_detected:
+            self.releaseValve.close()
             self.reset_input_dict()
             self.led.set_color((0, 255, 0))
             self.pump.open()
@@ -114,6 +113,7 @@ class EasyMode(GenericGamemode):
             self.pump.close()
         else:
             self.led.set_color((255, 0, 0))
+            self.releaseValve.open()
 
     def intro(self):
         self.led.set_color((0, 255, 0))
