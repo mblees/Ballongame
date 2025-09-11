@@ -100,8 +100,8 @@ class EasyMode(GenericGamemode):
         if self.first_cycle:
             self.intro()
 
-        pressure = self.pressure_sensor.read_pressure()
-        self.logger.debug(f"Pressure: {pressure} psi")
+        # pressure = self.pressure_sensor.read_pressure()
+        # self.logger.debug(f"Pressure: {pressure} psi")
 
         input_detected = False
         for key in self.inputs:
