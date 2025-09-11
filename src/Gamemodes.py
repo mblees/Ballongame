@@ -18,10 +18,6 @@ class GenericGamemode:
         self.servo.reset()
 
         self.pressure_sensor = PressureSensor(channel=1)
-        while True:
-            pressure = self.pressure_sensor.read_pressure()
-            self.logger.debug(f"Pressure: {pressure} psi")
-            time.sleep(1)
 
         self.mqtt_client = mqtt.Client()
         # self.wait_for_network()
@@ -103,6 +99,9 @@ class EasyMode(GenericGamemode):
     def run_gameloop(self):
         if self.first_cycle:
             self.intro()
+
+        pressure = self.pressure_sensor.read_pressure()
+        self.logger.debug(f"Pressure: {pressure} psi")
 
         input_detected = False
         for key in self.inputs:
