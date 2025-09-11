@@ -158,3 +158,35 @@ class Button:
 
     def disable_interrupt(self):
         self._stop_event.set()
+
+
+class MiuzeiDigitalServo:  # 20kg Servo
+    def __init__(self, pi, io: int, min_angle: float = 0.0, max_angle: float = 180.0,
+                 min_pulse: int = 500, max_pulse: int = 2500):
+        self.logger = logging.getLogger("MiuzeiDigitalServo")
+        self.pi = pi
+        self.io = io
+        self.min_angle = min_angle
+        self.max_angle = max_angle
+        self.min_pulse = min_pulse
+        self.max_pulse = max_pulse
+        self.current_angle = None
+
+        # Set GPIO as output (pigpio handles PWM on it)
+        self.pi.set_mode(self.io, 1)  # 1 = OUTPUT
+
+    def _angle_to_pulse(self, angle: float) -> int:
+        angle = max(self.min_angle, min(self.max_angle, angle))  # clamp
+        pulse = int(self.min_pulse + (angle - self.min_angle) *
+                    (self.max_pulse - self.min_pulse) / (self.max_angle - self.min_angle))
+        return pulse
+
+    def rotate_to(self, angle: float):
+        pulse = self._angle_to_pulse(angle)
+        self.logger.debug(f"Rotating to {angle:.1f}° → pulse {pulse}µs")
+        self.pi.set_servo_pulsewidth(self.io, pulse)
+        self.current_angle = angle
+
+    def stop(self):
+        self.logger.debug("Stopping servo PWM output")
+        self.pi.set_servo_pulsewidth(self.io, 0)
