@@ -114,7 +114,7 @@ class EasyMode(GenericGamemode):
             self.pressure_sensor.read_pressure()
         else:
             self.led.set_color((255, 0, 0))
-            self.releaseValve.open()
+            # self.releaseValve.open()
 
     def intro(self):
         self.led.set_color((0, 255, 0))
