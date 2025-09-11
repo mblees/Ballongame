@@ -35,12 +35,14 @@ class GenericGamemode:
         topic = msg.topic
 
         if self.previous_payload.get(topic) == "1" and payload == "0":
+            if topic == "Pico2/Eingabe":
+                self.logger.debug("Button Pressed")
+                self.inputs[2] = True
+
+        if payload == "0":
             if topic == "Pico1/Eingabe":
                 self.logger.debug("Encoder dreht sich")
                 self.inputs[1] = True
-            elif topic == "Pico2/Eingabe":
-                self.logger.debug("Button Pressed")
-                self.inputs[2] = True
             elif topic == "Pico3/Eingabe":
                 self.logger.debug("Fan spinning")
                 self.inputs[3] = True
