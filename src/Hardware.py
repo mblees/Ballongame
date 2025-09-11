@@ -162,7 +162,7 @@ class Button:
 
 class MiuzeiDigitalServo:  # 20kg Servo
     def __init__(self, pi, io: int, min_angle: float = 0.0, max_angle: float = 180.0,
-                 min_pulse: int = 500, max_pulse: int = 2500):
+                 min_pulse: int = 1000, max_pulse: int = 2000):
         self.logger = logging.getLogger("MiuzeiDigitalServo")
         self.pi = pi
         self.io = io
