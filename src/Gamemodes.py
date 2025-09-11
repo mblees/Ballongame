@@ -18,7 +18,7 @@ class GenericGamemode:
         self.servo.rotate_to(90)
         time.sleep(3)
         self.servo.rotate_to(180)
-        time-sleep(3)
+        time.sleep(3)
         self.logger.debug("Initializing Game Mode!")
 
         self.mqtt_client = mqtt.Client()
