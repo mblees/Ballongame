@@ -161,8 +161,8 @@ class Button:
 
 
 class MiuzeiDigitalServo:  # 20kg Servo
-    def __init__(self, pi, io: int, min_angle: float = 0.0, max_angle: float = 180.0,
-                 min_pulse: int = 1000, max_pulse: int = 2000):
+    def __init__(self, pi, io: int, min_angle: float = 0.0, max_angle: float = 270.0,
+                 min_pulse: int = 500, max_pulse: int = 2500):
         self.logger = logging.getLogger("MiuzeiDigitalServo")
         self.pi = pi
         self.io = io
@@ -187,6 +187,8 @@ class MiuzeiDigitalServo:  # 20kg Servo
         self.logger.debug(f"Rotating to {angle:.1f}° → pulse {pulse}µs")
         self.pi.set_servo_pulsewidth(self.io, pulse)
         self.current_angle = angle
+        time.sleep(0.5)  # give servo time to move
+        self.stop()
 
     def stop(self):
         self.logger.debug("Stopping servo PWM output")

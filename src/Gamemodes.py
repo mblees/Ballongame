@@ -15,9 +15,6 @@ class GenericGamemode:
         self.releaseValve = ReleaseValve(self.pi)
         self.led = LED(self.pi, num_leds=75)
         self.servo = MiuzeiDigitalServo(self.pi, 13)
-        while True:
-            self.servo.rotate_to(180)
-        self.logger.debug("Initializing Game Mode!")
 
         self.mqtt_client = mqtt.Client()
         # self.wait_for_network()
