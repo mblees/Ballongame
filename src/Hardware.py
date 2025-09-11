@@ -202,3 +202,8 @@ class MiuzeiDigitalServo:  # 20kg Servo
 
     def reset(self):
         self.rotate_to(self.normal_angle)
+
+    def eject_and_reset(self):
+        self.eject()
+        time.sleep(1)
+        self.reset()
