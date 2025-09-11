@@ -2,6 +2,7 @@
 
 rpi_ws281x
 paho-mqtt
+Adafruit-ADS1x15
 adafruit-circuitpython-neopixel
 adafruit-blinka
 pigpio

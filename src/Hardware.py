@@ -7,6 +7,7 @@ import threading
 import time
 import math
 import random
+import Adafruit_ADS1x15
 
 
 class Pump:
@@ -209,3 +210,43 @@ class MiuzeiDigitalServo:  # 20kg Servo
         self.eject()
         time.sleep(1)
         self.reset()
+
+
+class PressureSensor:
+    def __init__(self, channel: int, pressure_max: float = 10, adc_gain: int = 1, v_ref: float = 5.0):
+        self.logger = logging.getLogger("DruckSensor")
+        self.channel = channel
+        self.pressure_max = pressure_max
+        self.v_ref = v_ref
+        self.adc = Adafruit_ADS1x15.ADS1115()
+        self.gain = adc_gain
+
+        self.adc_max = 32767  # 16-bit signed
+
+    def read_voltage(self) -> float:
+        raw = self.adc.read_adc(self.channel, gain=self.gain)
+        # ±4.096 V bei gain=1 → 1 Bit = 0.125 mV
+        voltage = raw * 4.096 / self.adc_max
+        self.logger.debug(f"ADC raw: {raw}, Voltage: {voltage:.3f} V")
+        return voltage
+
+    def read_pressure(self) -> float:
+        """Rechnet Spannung in Druck um (PSI)."""
+        voltage = self.read_voltage()
+        if voltage < 0.5:  # Unterhalb Sensor-Offset → Fehler
+            return 0.0
+        if voltage > 4.5:  # Oberhalb → Clamping
+            voltage = 4.5
+        pressure = ((voltage - 0.5) / 4.0) * self.pressure_max
+        self.logger.debug(f"Voltage: {voltage:.3f} V → Pressure: {pressure:.2f} PSI")
+        return pressure
+
+    def read_average_pressure(self, samples: int = 5, delay: float = 0.05) -> float:
+        """Mittelwert mehrerer Messungen (Glättung)."""
+        values = []
+        for _ in range(samples):
+            values.append(self.read_pressure())
+            time.sleep(delay)
+        avg = sum(values) / len(values)
+        self.logger.debug(f"Average pressure: {avg:.2f} PSI")
+        return avg

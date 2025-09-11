@@ -1,5 +1,5 @@
 import logging
-from src.Hardware import Pump, ReleaseValve, LED, MiuzeiDigitalServo
+from src.Hardware import Pump, ReleaseValve, LED, MiuzeiDigitalServo, PressureSensor
 import paho.mqtt.client as mqtt
 import time
 import socket
@@ -16,6 +16,11 @@ class GenericGamemode:
         self.led = LED(self.pi, num_leds=75)
         self.servo = MiuzeiDigitalServo(self.pi, 13)
         self.servo.reset()
+
+        self.pressure_sensor = PressureSensor(channel=1)
+        while True:
+            pressure = self.pressure_sensor.read_pressure()
+            self.logger.debug(f"Pressure: {pressure} psi")
 
         self.mqtt_client = mqtt.Client()
         # self.wait_for_network()
