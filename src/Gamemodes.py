@@ -39,7 +39,7 @@ class GenericGamemode:
         self.explode_button.enable_interrupt(callback=self.toggle_explode_mode, poll_interval=2)
         self.explode = False
 
-        self.pi.write(self.io, 6)
+        self.pi.write(6, 1)
 
     def callback(self, client, userdata, msg):
         payload = msg.payload.decode()
