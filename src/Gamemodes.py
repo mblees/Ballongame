@@ -122,7 +122,7 @@ class GenericGamemode:
             self.logger.debug("Explode mode activated")
             self.led.set_color((255, 0, 0))
             self.led.blink(speed=0.3, amount=5)
-        self.interrupt_active = True
+        self.interrupt_active = False
 
 
 class EasyMode(GenericGamemode):
