@@ -123,7 +123,7 @@ class EasyMode(GenericGamemode):
             self.led.sinus(period=0.33, cycles=3)
             self.pump.close()
 
-            if self.pump.open_time - (self.releaseValve.open_time / 1.5) > 50:
+            if self.pump.open_time - self.releaseValve.open_time > 50:
                 self.servo.eject_and_reset()
                 self.won = True
             # self.pressure_sensor.read_pressure()
