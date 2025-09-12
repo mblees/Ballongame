@@ -174,8 +174,8 @@ class MiuzeiDigitalServo:  # 20kg Servo
         self.max_pulse = max_pulse
         self.current_angle = None
 
-        self.eject_angle = 190
-        self.normal_angle = 160
+        self.eject_angle = 150
+        self.normal_angle = 150
 
         # Set GPIO as output (pigpio handles PWM on it)
         self.pi.set_mode(self.io, 1)  # 1 = OUTPUT
