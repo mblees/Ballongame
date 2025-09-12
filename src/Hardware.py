@@ -32,12 +32,16 @@ class ReleaseValve:
         self.logger = logging.getLogger("ReleaseValve")
         self.io = 27
         self.pi = pi
+        self.open_time = 0
+        self.start_time = 0
 
     def open(self):
         self.pi.write(self.io, 1)
+        self.start_time = time.time()
 
     def close(self):
         self.pi.write(self.io, 0)
+        self.open_time += time.time() - self.start_time
 
 
 class LED:

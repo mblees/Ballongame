@@ -30,6 +30,8 @@ class GenericGamemode:
         self.reset_input_dict()
         self.first_cycle = True
 
+        self.won = False
+
         self.eject_button = Button(self.pi, 26)
         self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
 
@@ -110,6 +112,10 @@ class EasyMode(GenericGamemode):
             if self.inputs[key]:
                 input_detected = True
         if input_detected:
+            if self.won:
+                self.pump.open_time = 0
+                self.releaseValve.open_time = 0
+                self.won = False
             self.releaseValve.close()
             self.reset_input_dict()
             self.led.set_color((0, 255, 0))
@@ -117,8 +123,9 @@ class EasyMode(GenericGamemode):
             self.led.sinus(period=0.33, cycles=3)
             self.pump.close()
 
-            if self.pump.open_time > 30:
+            if self.pump.open_time - (self.releaseValve.open_time / 1.5) > 50:
                 self.servo.eject_and_reset()
+                self.won = True
             # self.pressure_sensor.read_pressure()
         else:
             self.led.set_color((255, 0, 0))
