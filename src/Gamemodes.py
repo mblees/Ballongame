@@ -125,7 +125,7 @@ class EasyMode(GenericGamemode):
 
             self.logger.debug(f"on-time: {self.pump.open_time - self.releaseValve.open_time}")
 
-            if self.pump.open_time - self.releaseValve.open_time > 50:
+            if self.pump.open_time - self.releaseValve.open_time / 1.5 > 50:
                 self.servo.eject_and_reset()
                 self.won = True
             # self.pressure_sensor.read_pressure()
