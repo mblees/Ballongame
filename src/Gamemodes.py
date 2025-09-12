@@ -108,11 +108,13 @@ class GenericGamemode:
         time.sleep(0.5)
         if self.explode:
             self.explode = False
+            self.logger.debug("Explode mode deactivated")
             self.led.set_color((0, 255, 0))
             self.led.blink(speed=0.3, amount=5)
 
         else:
             self.explode = True
+            self.logger.debug("Explode mode activated")
             self.led.set_color((255, 0, 0))
             self.led.blink(speed=0.3, amount=5)
 
