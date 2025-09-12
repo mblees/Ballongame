@@ -106,6 +106,13 @@ class GenericGamemode:
 
     def toggle_explode_mode(self):
         self.explode = not self.explode
+        if self.explode:
+            self.led.set_color((255, 0, 0))
+            self.led.blink(speed=0.3, amount=5)
+        else:
+            self.led.set_color((0, 255, 0))
+            self.led.blink(speed=0.3, amount=5)
+
 
 
 class EasyMode(GenericGamemode):
