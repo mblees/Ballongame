@@ -229,6 +229,7 @@ class HardMode(GenericGamemode):
     def run_gameloop(self):
         if self.first_cycle:
             self.intro()
+            self.releaseValve.open()
 
         if self.interrupt_active:
             self.waiting = True
