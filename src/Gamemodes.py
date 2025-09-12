@@ -154,7 +154,7 @@ class MediumMode(GenericGamemode):
         for key in self.inputs:
             if self.inputs[key]:
                 input_amount += 1
-        if input_amount > 2:
+        if input_amount > 1:
             self.releaseValve.close()
             if self.won:
                 self.pump.open_time = 0
