@@ -35,6 +35,12 @@ class GenericGamemode:
         self.eject_button = Button(self.pi, 26)
         self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
 
+        self.explode_button = Button(self.pi, 16)
+        self.explode_button.enable_interrupt(callback=self.toggle_explode_mode, poll_interval=2)
+        self.explode = False
+
+        self.pi.write(self.io, 6)
+
     def callback(self, client, userdata, msg):
         payload = msg.payload.decode()
         topic = msg.topic
@@ -98,6 +104,9 @@ class GenericGamemode:
     def reset_input_dict(self):
         self.inputs = {1: False, 2: False, 3: False, 4: False}
 
+    def toggle_explode_mode(self):
+        self.explode = not self.explode
+
 
 class EasyMode(GenericGamemode):
     def __init__(self, pi):
@@ -128,7 +137,7 @@ class EasyMode(GenericGamemode):
             if balloon_time < 0:
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
-            if balloon_time > 40:
+            if balloon_time > 40 and not self.explode:
                 self.servo.eject_and_reset()
                 self.won = True
         else:
@@ -171,7 +180,7 @@ class MediumMode(GenericGamemode):
             if balloon_time < 0:
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
-            if balloon_time > 40:
+            if balloon_time > 40 and not self.explode:
                 self.servo.eject_and_reset()
                 self.won = True
         else:
@@ -213,7 +222,7 @@ class HardMode(GenericGamemode):
             if balloon_time < 0:
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
-            if balloon_time > 40:
+            if balloon_time > 40 and not self.explode:
                 self.servo.eject_and_reset()
                 self.won = True
         else:
