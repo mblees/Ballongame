@@ -243,6 +243,7 @@ class HardMode(GenericGamemode):
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
                 self.won = False
+            self.releaseValve.close()
             self.led.set_color((0, 255, 0))
             self.pump.open()
             self.led.sinus(cycles=5)
@@ -258,7 +259,6 @@ class HardMode(GenericGamemode):
                 self.servo.eject_and_reset()
                 self.won = True
         else:
-            self.releaseValve.open()
             self.led.set_color((255, 0, 0))
             self.led.sinus()
 
