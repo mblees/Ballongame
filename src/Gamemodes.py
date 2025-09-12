@@ -123,8 +123,8 @@ class EasyMode(GenericGamemode):
             self.led.sinus(period=0.33, cycles=3)
             self.pump.close()
 
-            self.logger.debug(f"on-time: {self.pump.open_time - self.releaseValve.open_time}")
             balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
+            self.logger.debug(f"on-time: {balloon_time}")
             if balloon_time < 0:
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
@@ -155,12 +155,27 @@ class MediumMode(GenericGamemode):
             if self.inputs[key]:
                 input_amount += 1
         if input_amount > 2:
+            self.releaseValve.close()
+            if self.won:
+                self.pump.open_time = 0
+                self.releaseValve.open_time = 0
+                self.won = False
             self.reset_input_dict()
             self.led.set_color((0, 255, 0))
             self.pump.open()
             self.led.sinus()
             self.pump.close()
+
+            balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
+            self.logger.debug(f"on-time: {balloon_time}")
+            if balloon_time < 0:
+                self.pump.open_time = 0
+                self.releaseValve.open_time = 0
+            if balloon_time > 40:
+                self.servo.eject_and_reset()
+                self.won = True
         else:
+            self.releaseValve.open()
             self.led.set_color((255, 0, 0))
 
     def intro(self):
@@ -183,12 +198,26 @@ class HardMode(GenericGamemode):
         self.led.set_color(self.get_color_by_player(random_player))
         time.sleep(2)
         if self.inputs[random_player]:
+            if self.won:
+                self.pump.open_time = 0
+                self.releaseValve.open_time = 0
+                self.won = False
             self.led.set_color((0, 255, 0))
             self.pump.open()
             self.led.sinus(cycles=5)
             self.pump.close()
             self.reset_input_dict()
+
+            balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
+            self.logger.debug(f"on-time: {balloon_time}")
+            if balloon_time < 0:
+                self.pump.open_time = 0
+                self.releaseValve.open_time = 0
+            if balloon_time > 40:
+                self.servo.eject_and_reset()
+                self.won = True
         else:
+            self.releaseValve.open()
             self.led.set_color((255, 0, 0))
             self.led.sinus()
 
