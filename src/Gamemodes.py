@@ -124,11 +124,13 @@ class EasyMode(GenericGamemode):
             self.pump.close()
 
             self.logger.debug(f"on-time: {self.pump.open_time - self.releaseValve.open_time}")
-
-            if self.pump.open_time - self.releaseValve.open_time / 1.5 > 50:
+            balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
+            if balloon_time < 0:
+                self.pump.open_time = 0
+                self.releaseValve.open_time = 0
+            if balloon_time > 40:
                 self.servo.eject_and_reset()
                 self.won = True
-            # self.pressure_sensor.read_pressure()
         else:
             self.led.set_color((255, 0, 0))
             self.releaseValve.open()
