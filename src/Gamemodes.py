@@ -116,6 +116,9 @@ class EasyMode(GenericGamemode):
             self.pump.open()
             self.led.sinus(period=0.33, cycles=3)
             self.pump.close()
+
+            if self.pump.open_time > 30:
+                self.servo.eject_and_reset()
             # self.pressure_sensor.read_pressure()
         else:
             self.led.set_color((255, 0, 0))
