@@ -40,6 +40,8 @@ class GenericGamemode:
         self.explode = False
 
         self.pi.write(6, 1)
+        self.interrupt_active = False
+        self.waiting = False
 
     def callback(self, client, userdata, msg):
         payload = msg.payload.decode()
@@ -105,6 +107,9 @@ class GenericGamemode:
         self.inputs = {1: False, 2: False, 3: False, 4: False}
 
     def toggle_explode_mode(self):
+        self.interrupt_active = True
+        while not self.waiting:
+            pass
         time.sleep(0.5)
         if self.explode:
             self.explode = False
@@ -117,6 +122,7 @@ class GenericGamemode:
             self.logger.debug("Explode mode activated")
             self.led.set_color((255, 0, 0))
             self.led.blink(speed=0.3, amount=5)
+        self.interrupt_active = True
 
 
 class EasyMode(GenericGamemode):
@@ -126,6 +132,11 @@ class EasyMode(GenericGamemode):
     def run_gameloop(self):
         if self.first_cycle:
             self.intro()
+
+        if self.interrupt_active:
+            self.waiting = True
+            return
+        self.waiting = False
 
         input_detected = False
         for key in self.inputs:
@@ -170,6 +181,11 @@ class MediumMode(GenericGamemode):
         if self.first_cycle:
             self.intro()
 
+        if self.interrupt_active:
+            self.waiting = True
+            return
+        self.waiting = False
+
         input_amount = 0
         for key in self.inputs:
             if self.inputs[key]:
@@ -213,6 +229,11 @@ class HardMode(GenericGamemode):
     def run_gameloop(self):
         if self.first_cycle:
             self.intro()
+
+        if self.interrupt_active:
+            self.waiting = True
+            return
+        self.waiting = False
 
         random_player = self.choose_random_player()
         self.led.set_color(self.get_color_by_player(random_player))

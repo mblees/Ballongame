@@ -79,7 +79,7 @@ class LED:
         self._apply_color()
 
     def blink(self, speed: float = 0.1, amount: int = 3):
-        for i in range(amount):
+        for _ in range(amount):
             self.turn_off()
             time.sleep(speed)
             self.turn_on()
