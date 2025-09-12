@@ -1,5 +1,5 @@
 import logging
-from src.Hardware import Pump, ReleaseValve, LED, MiuzeiDigitalServo, PressureSensor
+from src.Hardware import Pump, ReleaseValve, LED, MiuzeiDigitalServo, PressureSensor, Button
 import paho.mqtt.client as mqtt
 import time
 import socket
@@ -29,6 +29,9 @@ class GenericGamemode:
         self.inputs: dict[int, bool] = {}
         self.reset_input_dict()
         self.first_cycle = True
+
+        self.eject_button = Button(self.pi, 26)
+        self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
 
     def callback(self, client, userdata, msg):
         payload = msg.payload.decode()

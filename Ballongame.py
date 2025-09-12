@@ -20,8 +20,6 @@ class Ballongame:
         self.mode: GenericGamemode = EasyMode(self.pi)
         self.mode_button = Button(self.pi, 22)
         self.mode_button.enable_interrupt(self.change_mode)
-        self.eject_button = Button(self.pi, 26)
-        self.eject_button.enable_interrupt(self.mode.servo.eject_and_reset())
         self._running = True
 
     def run(self):
