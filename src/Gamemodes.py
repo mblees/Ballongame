@@ -235,6 +235,8 @@ class HardMode(GenericGamemode):
             return
         self.waiting = False
 
+        self.releaseValve.close()
+
         random_player = self.choose_random_player()
         self.led.set_color(self.get_color_by_player(random_player))
         time.sleep(2)
@@ -243,7 +245,6 @@ class HardMode(GenericGamemode):
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
                 self.won = False
-            self.releaseValve.close()
             self.led.set_color((0, 255, 0))
             self.pump.open()
             self.led.sinus(cycles=5)
