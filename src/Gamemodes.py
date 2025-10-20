@@ -115,13 +115,13 @@ class GenericGamemode:
             self.explode = False
             self.logger.debug("Explode mode deactivated")
             self.led.set_color((0, 255, 0))
-            self.led.blink(speed=0.3, amount=5)
+            self.led.blink(speed=0.3, amount=2)
 
         else:
             self.explode = True
             self.logger.debug("Explode mode activated")
             self.led.set_color((255, 0, 0))
-            self.led.blink(speed=0.3, amount=5)
+            self.led.blink(speed=0.3, amount=2)
         self.interrupt_active = False
         
     def cleanup(self):
