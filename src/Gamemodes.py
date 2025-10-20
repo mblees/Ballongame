@@ -123,6 +123,15 @@ class GenericGamemode:
             self.led.set_color((255, 0, 0))
             self.led.blink(speed=0.3, amount=5)
         self.interrupt_active = False
+        
+    def cleanup(self):
+        self.logger.info("Cleaning up Gamemode resources...")
+        self.pump.close()
+        self.releaseValve.close()
+        self.led.turn_off()
+        self.servo.reset()
+        self.mqtt_client.loop_stop()
+        self.mqtt_client.disconnect()
 
 
 class EasyMode(GenericGamemode):

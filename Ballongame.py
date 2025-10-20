@@ -21,14 +21,19 @@ class Ballongame:
         self.mode_button = Button(self.pi, 22)
         self.mode_button.enable_interrupt(self.change_mode)
         self._running = True
+        self._pause = False
 
     def run(self):
         self.logger.info("Starting Game Loop!")
         while self._running:
-            self.mode.run_gameloop()
+            if not self._pause:
+                self.mode.run_gameloop()
 
     def change_mode(self):
         if not self.mode.first_cycle:
+            self._pause = True
+            self.mode.cleanup()
+            
             if isinstance(self.mode, EasyMode):
                 self.mode = MediumMode(self.pi)
                 self.logger.info("Changing Mode to MediumMode!")
@@ -38,6 +43,9 @@ class Ballongame:
             elif isinstance(self.mode, HardMode):
                 self.mode = EasyMode(self.pi)
                 self.logger.info("Changing Mode to EasyMode!")
+                
+            time.sleep(3) # Time for the last loop to finish
+            self._pause = False
 
 
 if __name__ == "__main__":
