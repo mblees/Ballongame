@@ -87,6 +87,8 @@ class GenericGamemode:
         self.logger = logging.getLogger(logging_name)
         self.mode: str = logging_name
         
+        self.tools = tools
+        
         self.led = tools.led
         self.pump = tools.pump
         self.releaseValve = tools.releaseValve
@@ -121,6 +123,11 @@ class GenericGamemode:
         self.releaseValve.close()
         self.led.turn_off()
         self.servo.reset()
+        
+    def update_variables(self):
+        self.inputs = self.tools.inputs
+        self.previous_payload = self.tools.previous_payload
+        self.explode = self.tools.explode
 
 
 class EasyMode(GenericGamemode):
@@ -128,6 +135,7 @@ class EasyMode(GenericGamemode):
         super().__init__("Easy Mode", tools)
 
     def run_gameloop(self):
+        self.update_variables()
         if self.first_cycle:
             self.interrupt_active = True
             self.intro()
@@ -179,6 +187,7 @@ class MediumMode(GenericGamemode):
         super().__init__("Medium Mode", tools)
 
     def run_gameloop(self):
+        self.update_variables()
         if self.first_cycle:
             self.interrupt_active = True
             self.intro()
@@ -230,6 +239,7 @@ class HardMode(GenericGamemode):
         self.last_player = 0
 
     def run_gameloop(self):
+        self.update_variables()
         if self.first_cycle:
             self.interrupt_active = True
             self.intro()
