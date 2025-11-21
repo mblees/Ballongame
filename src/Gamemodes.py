@@ -49,21 +49,16 @@ class GenericGamemode:
 
         if self.previous_payload.get(topic) == "1" and payload == "0":
             if topic == "Pico2/Eingabe":
-                self.logger.debug("Button Pressed")
                 self.inputs[2] = True
 
         if payload == "0":
             if topic == "Pico1/Eingabe":
-                self.logger.debug("Encoder dreht sich")
                 self.inputs[1] = True
             elif topic == "Pico3/Eingabe":
-                self.logger.debug("Fan spinning")
                 self.inputs[3] = True
             elif topic == "Pico4/Eingabe":
-                self.logger.debug("Controller geschüttelt")
                 self.inputs[4] = True
 
-        # Update the last payload for this topic
         self.previous_payload[topic] = payload
 
     def run_gameloop(self):
@@ -107,21 +102,22 @@ class GenericGamemode:
         self.inputs = {1: False, 2: False, 3: False, 4: False}
 
     def toggle_explode_mode(self):
+        if self.interrupt_active:
+            return
         self.interrupt_active = True
         while not self.waiting:
             pass
-        time.sleep(0.5)
         if self.explode:
             self.explode = False
             self.logger.debug("Explode mode deactivated")
             self.led.set_color((0, 255, 0))
-            self.led.blink(speed=0.3, amount=2)
+            self.led.blink(speed=0.3, amount=3)
 
         else:
             self.explode = True
             self.logger.debug("Explode mode activated")
             self.led.set_color((255, 0, 0))
-            self.led.blink(speed=0.3, amount=2)
+            self.led.blink(speed=0.3, amount=3)
         self.interrupt_active = False
         
     def cleanup(self):
@@ -199,7 +195,7 @@ class MediumMode(GenericGamemode):
         for key in self.inputs:
             if self.inputs[key]:
                 input_amount += 1
-        if input_amount > 1:
+        if input_amount > 2:
             self.releaseValve.close()
             if self.won:
                 self.pump.open_time = 0
