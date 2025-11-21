@@ -130,8 +130,8 @@ class GenericGamemode:
 
 
 class EasyMode(GenericGamemode):
-    def __init__(self, pi):
-        super().__init__("Easy Mode", pi)
+    def __init__(self, pi, tools: GamemodeTools):
+        super().__init__("Easy Mode", pi, tools)
 
     def run_gameloop(self):
         if self.first_cycle:
@@ -180,8 +180,8 @@ class EasyMode(GenericGamemode):
 
 
 class MediumMode(GenericGamemode):
-    def __init__(self, pi):
-        super().__init__("Medium Mode", pi)
+    def __init__(self, pi, tools: GamemodeTools):
+        super().__init__("Medium Mode", pi, tools)
 
     def run_gameloop(self):
         if self.first_cycle:
@@ -230,8 +230,8 @@ class MediumMode(GenericGamemode):
 
 
 class HardMode(GenericGamemode):
-    def __init__(self, pi):
-        super().__init__("Hard Mode", pi)
+    def __init__(self, pi, tools: GamemodeTools):
+        super().__init__("Hard Mode", pi, tools)
         self.last_player = 0
 
     def run_gameloop(self):
