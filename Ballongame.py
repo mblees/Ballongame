@@ -13,6 +13,8 @@ class Ballongame:
     def __init__(self):
         self.logger = logging.getLogger("Ballongame")
         self.logger.setLevel(logging.DEBUG)
+        
+        self.logger.info("Initializing Ballongame...")
 
         self.pi = pigpio.pi()
         GPIO.setmode(GPIO.BCM)
