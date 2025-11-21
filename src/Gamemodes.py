@@ -136,7 +136,9 @@ class EasyMode(GenericGamemode):
 
     def run_gameloop(self):
         if self.first_cycle:
+            self.interrupt_active = True
             self.intro()
+            self.interrupt_active = False
 
         if self.interrupt_active:
             self.waiting = True
@@ -184,7 +186,9 @@ class MediumMode(GenericGamemode):
 
     def run_gameloop(self):
         if self.first_cycle:
+            self.interrupt_active = True
             self.intro()
+            self.interrupt_active = False
 
         if self.interrupt_active:
             self.waiting = True
@@ -233,8 +237,10 @@ class HardMode(GenericGamemode):
 
     def run_gameloop(self):
         if self.first_cycle:
+            self.interrupt_active = True
             self.intro()
             self.releaseValve.open()
+            self.interrupt_active = False
 
         if self.interrupt_active:
             self.waiting = True
