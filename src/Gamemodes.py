@@ -20,14 +20,18 @@ class GamemodeTools:
 
         if self.previous_payload.get(topic) == "1" and payload == "0":
             if topic == "Pico2/Eingabe":
+                self.logger.debug("Input from Player 2 detected.")
                 self.inputs[2] = True
 
         if payload == "0":
             if topic == "Pico1/Eingabe":
+                self.logger.debug("Input from Player 1 detected.")
                 self.inputs[1] = True
             elif topic == "Pico3/Eingabe":
+                self.logger.debug("Input from Player 3 detected.")
                 self.inputs[3] = True
             elif topic == "Pico4/Eingabe":
+                self.logger.debug("Input from Player 4 detected.")
                 self.inputs[4] = True
         
         self.previous_payload[topic] = payload
