@@ -1,8 +1,7 @@
 import logging
-from src.Hardware import Pump, ReleaseValve, LED, MiuzeiDigitalServo, PressureSensor, Button
+from src.Hardware import Pump, ReleaseValve, LED, MiuzeiDigitalServo, Button
 import paho.mqtt.client as mqtt
 import time
-import socket
 import random
 
 class GamemodeTools:
@@ -21,6 +20,10 @@ class GamemodeTools:
         
         self.eject_button = Button(self.pi, 26)
         self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
+        
+        self.explode_button = Button(self.pi, 16)
+        self.explode_button.enable_interrupt(callback=self.toggle_explode_mode, poll_interval=2)
+        self.explode = False
         
         self.mqtt_client = mqtt.Client()
         self.init_mqtt_client()
@@ -69,6 +72,14 @@ class GamemodeTools:
         self.mqtt_client.subscribe("Pico3/Eingabe")
         self.mqtt_client.subscribe("Pico4/Eingabe")
         self.mqtt_client.loop_start()
+        
+    def toggle_explode_mode(self):
+        if self.explode:
+            self.explode = False
+            self.logger.debug("Explode mode deactivated")
+        else:
+            self.explode = True
+            self.logger.debug("Explode mode activated")
     
     
 class GenericGamemode:
@@ -85,14 +96,11 @@ class GenericGamemode:
         self.inputs = tools.inputs
         self.previous_payload = tools.previous_payload
         self.reset_input_dict()
+        
+        self.explode = tools.explode
+        
         self.first_cycle = True
-
         self.won = False
-
-        self.explode_button = Button(self.pi, 16)
-        self.explode_button.enable_interrupt(callback=self.toggle_explode_mode, poll_interval=2)
-        self.explode = False
-
         self.interrupt_active = False
         self.waiting = False
 
@@ -106,14 +114,6 @@ class GenericGamemode:
 
     def reset_input_dict(self):
         self.inputs = {1: False, 2: False, 3: False, 4: False}
-
-    def toggle_explode_mode(self):
-        if self.explode:
-            self.explode = False
-            self.logger.debug("Explode mode deactivated")
-        else:
-            self.explode = True
-            self.logger.debug("Explode mode activated")
         
     def cleanup(self):
         self.logger.info("Cleaning up Gamemode resources...")
