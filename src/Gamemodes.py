@@ -108,23 +108,12 @@ class GenericGamemode:
         self.inputs = {1: False, 2: False, 3: False, 4: False}
 
     def toggle_explode_mode(self):
-        if self.interrupt_active:
-            return
-        self.interrupt_active = True
-        while not self.waiting:
-            pass
         if self.explode:
             self.explode = False
             self.logger.debug("Explode mode deactivated")
-            self.led.set_color((0, 255, 0))
-            self.led.blink(speed=0.3, amount=3)
-
         else:
             self.explode = True
             self.logger.debug("Explode mode activated")
-            self.led.set_color((255, 0, 0))
-            self.led.blink(speed=0.3, amount=3)
-        self.interrupt_active = False
         
     def cleanup(self):
         self.logger.info("Cleaning up Gamemode resources...")
