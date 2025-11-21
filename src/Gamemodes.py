@@ -149,6 +149,7 @@ class EasyMode(GenericGamemode):
         self.waiting = False
 
         input_detected = False
+        self.logger.debug(f"Current inputs: {self.inputs}")
         for key in self.inputs:
             if self.inputs[key]:
                 input_detected = True

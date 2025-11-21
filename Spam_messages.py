@@ -7,7 +7,7 @@ mqtt_client.connect("192.168.0.127", 1883, 60)
 
 while True:
     mqtt_client.publish("Pico1/Eingabe", "0")
-    mqtt_client.publish("Pico2/Eingabe", "0")
-    mqtt_client.publish("Pico3/Eingabe", "0")
-    mqtt_client.publish("Pico4/Eingabe", "0")
+    # mqtt_client.publish("Pico2/Eingabe", "0")
+    # mqtt_client.publish("Pico3/Eingabe", "0")
+    # mqtt_client.publish("Pico4/Eingabe", "0")
     time.sleep(0.2)
