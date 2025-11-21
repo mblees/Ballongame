@@ -19,8 +19,8 @@ class Ballongame:
         self.pi = pigpio.pi()
         GPIO.setmode(GPIO.BCM)
 
-        self.tools = GamemodeTools()
-        self.mode: GenericGamemode = EasyMode(self.pi, self.tools)
+        self.tools = GamemodeTools(self.pi)
+        self.mode: GenericGamemode = EasyMode(self.tools)
         self.mode_button = Button(self.pi, 22)
         self.mode_button.enable_interrupt(self.change_mode)
         self._running = True
@@ -39,13 +39,13 @@ class Ballongame:
             self.mode.cleanup()
             
             if isinstance(self.mode, EasyMode):
-                self.mode = MediumMode(self.pi, self.tools)
+                self.mode = MediumMode(self.tools)
                 self.logger.info("Changing Mode to MediumMode!")
             elif isinstance(self.mode, MediumMode):
-                self.mode = HardMode(self.pi, self.tools)
+                self.mode = HardMode(self.tools)
                 self.logger.info("Changing Mode to HardMode!")
             elif isinstance(self.mode, HardMode):
-                self.mode = EasyMode(self.pi, self.tools)
+                self.mode = EasyMode(self.tools)
                 self.logger.info("Changing Mode to EasyMode!")
                 
             time.sleep(3) # Time for the last loop to finish
