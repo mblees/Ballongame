@@ -5,44 +5,15 @@ import time
 import socket
 import random
 
-
-class GenericGamemode:
-    def __init__(self, logging_name: str, pi):
-        self.logger = logging.getLogger(logging_name)
-        self.mode: str = logging_name
-        self.pi = pi
-        self.pump = Pump(self.pi)
-        self.releaseValve = ReleaseValve(self.pi)
-        self.led = LED(self.pi, num_leds=75)
-        self.servo = MiuzeiDigitalServo(self.pi, 13)
-        self.servo.reset()
-
-        self.pressure_sensor = PressureSensor(channel=1)
-
+class GamemodeTools:
+    def __init__(self):
+        self.logger = logging.getLogger("GamemodeTools")
+        
         self.mqtt_client = mqtt.Client()
-        # self.wait_for_network()
         self.init_mqtt_client()
-        self.led.set_color((255, 0, 0))
-        self.led.turn_on()
-
         self.previous_payload = {}
         self.inputs: dict[int, bool] = {}
-        self.reset_input_dict()
-        self.first_cycle = True
-
-        self.won = False
-
-        self.eject_button = Button(self.pi, 26)
-        self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
-
-        self.explode_button = Button(self.pi, 16)
-        self.explode_button.enable_interrupt(callback=self.toggle_explode_mode, poll_interval=2)
-        self.explode = False
-
-        self.pi.write(6, 1)
-        self.interrupt_active = False
-        self.waiting = False
-
+        
     def callback(self, client, userdata, msg):
         payload = msg.payload.decode()
         topic = msg.topic
@@ -58,16 +29,9 @@ class GenericGamemode:
                 self.inputs[3] = True
             elif topic == "Pico4/Eingabe":
                 self.inputs[4] = True
-
+        
         self.previous_payload[topic] = payload
-
-    def run_gameloop(self):
-        self.logger.warning("Using generic Gamemode Class. Overwrite this function.")
-        raise NotImplementedError()
-
-    def print_mode(self):
-        self.logger.info(f"Mode is set to: {str(self.mode)}")
-
+        
     def init_mqtt_client(self):
         self.mqtt_client.username_pw_set(username="PicoNet", password="geheimespasswort")
         connected = False
@@ -86,17 +50,52 @@ class GenericGamemode:
         self.mqtt_client.subscribe("Pico3/Eingabe")
         self.mqtt_client.subscribe("Pico4/Eingabe")
         self.mqtt_client.loop_start()
+    
+    
+class GenericGamemode:
+    def __init__(self, logging_name: str, pi, tools: GamemodeTools):
+        self.logger = logging.getLogger(logging_name)
+        self.mode: str = logging_name
+        self.pi = pi
+        
+        self.mqtt_client = tools.mqtt_client
+        
+        self.pump = Pump(self.pi)
+        self.releaseValve = ReleaseValve(self.pi)
+        self.led = LED(self.pi, num_leds=75)
+        self.servo = MiuzeiDigitalServo(self.pi, 13)
+        self.servo.reset()
 
-    def wait_for_network(self, host="8.8.8.8", port=53, timeout=3, retries=10):
-        """Wait until the network is reachable."""
-        while True:
-            try:
-                socket.create_connection((host, port), timeout=timeout)
-                self.logger.info("Network is reachable.")
-                return True
-            except OSError:
-                self.logger.warning(f"Network unreachable, retrying...")
-                time.sleep(3)
+        self.pressure_sensor = PressureSensor(channel=1)
+        
+        self.led.set_color((255, 0, 0))
+        self.led.turn_on()
+
+        self.inputs = tools.inputs
+        self.previous_payload = tools.previous_payload
+        self.reset_input_dict()
+        self.first_cycle = True
+
+        self.won = False
+
+        self.eject_button = Button(self.pi, 26)
+        self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
+
+        self.explode_button = Button(self.pi, 16)
+        self.explode_button.enable_interrupt(callback=self.toggle_explode_mode, poll_interval=2)
+        self.explode = False
+
+        self.pi.write(6, 1)
+        self.interrupt_active = False
+        self.waiting = False
+
+
+    def run_gameloop(self):
+        self.logger.warning("Using generic Gamemode Class. Overwrite this function.")
+        raise NotImplementedError()
+
+    def print_mode(self):
+        self.logger.info(f"Mode is set to: {str(self.mode)}")
 
     def reset_input_dict(self):
         self.inputs = {1: False, 2: False, 3: False, 4: False}
