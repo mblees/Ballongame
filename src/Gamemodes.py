@@ -121,8 +121,6 @@ class GenericGamemode:
         self.releaseValve.close()
         self.led.turn_off()
         self.servo.reset()
-        self.mqtt_client.loop_stop()
-        self.mqtt_client.disconnect()
 
 
 class EasyMode(GenericGamemode):
