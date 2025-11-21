@@ -6,13 +6,28 @@ import socket
 import random
 
 class GamemodeTools:
-    def __init__(self):
+    def __init__(self, pi):
         self.logger = logging.getLogger("GamemodeTools")
+        self.logger.info("Initializing GamemodeTools")
+        
+        self.pi = pi
+        self.pump = Pump(self.pi)
+        self.releaseValve = ReleaseValve(self.pi)
+        self.led = LED(self.pi, num_leds=75)
+        self.servo = MiuzeiDigitalServo(self.pi, 13)
+        
+        self.led.set_color((255, 0, 0))
+        self.led.turn_on()
+        
+        self.eject_button = Button(self.pi, 26)
+        self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
         
         self.mqtt_client = mqtt.Client()
         self.init_mqtt_client()
         self.previous_payload = {}
         self.inputs: dict[int, bool] = {}
+        
+        self.pi.write(6, 1)
         
     def callback(self, client, userdata, msg):
         payload = msg.payload.decode()
@@ -57,23 +72,15 @@ class GamemodeTools:
     
     
 class GenericGamemode:
-    def __init__(self, logging_name: str, pi, tools: GamemodeTools):
+    def __init__(self, logging_name: str, tools: GamemodeTools):
         self.logger = logging.getLogger(logging_name)
         self.mode: str = logging_name
-        self.pi = pi
         
-        self.mqtt_client = tools.mqtt_client
-        
-        self.pump = Pump(self.pi)
-        self.releaseValve = ReleaseValve(self.pi)
-        self.led = LED(self.pi, num_leds=75)
-        self.servo = MiuzeiDigitalServo(self.pi, 13)
+        self.led = tools.led
+        self.pump = tools.pump
+        self.releaseValve = tools.releaseValve
+        self.servo = tools.servo
         self.servo.reset()
-
-        self.pressure_sensor = PressureSensor(channel=1)
-        
-        self.led.set_color((255, 0, 0))
-        self.led.turn_on()
 
         self.inputs = tools.inputs
         self.previous_payload = tools.previous_payload
@@ -82,14 +89,10 @@ class GenericGamemode:
 
         self.won = False
 
-        self.eject_button = Button(self.pi, 26)
-        self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
-
         self.explode_button = Button(self.pi, 16)
         self.explode_button.enable_interrupt(callback=self.toggle_explode_mode, poll_interval=2)
         self.explode = False
 
-        self.pi.write(6, 1)
         self.interrupt_active = False
         self.waiting = False
 
@@ -134,8 +137,8 @@ class GenericGamemode:
 
 
 class EasyMode(GenericGamemode):
-    def __init__(self, pi, tools: GamemodeTools):
-        super().__init__("Easy Mode", pi, tools)
+    def __init__(self, tools: GamemodeTools):
+        super().__init__("Easy Mode", tools)
 
     def run_gameloop(self):
         if self.first_cycle:
@@ -185,8 +188,8 @@ class EasyMode(GenericGamemode):
 
 
 class MediumMode(GenericGamemode):
-    def __init__(self, pi, tools: GamemodeTools):
-        super().__init__("Medium Mode", pi, tools)
+    def __init__(self, tools: GamemodeTools):
+        super().__init__("Medium Mode", tools)
 
     def run_gameloop(self):
         if self.first_cycle:
@@ -235,8 +238,8 @@ class MediumMode(GenericGamemode):
 
 
 class HardMode(GenericGamemode):
-    def __init__(self, pi, tools: GamemodeTools):
-        super().__init__("Hard Mode", pi, tools)
+    def __init__(self, tools: GamemodeTools):
+        super().__init__("Hard Mode", tools)
         self.last_player = 0
 
     def run_gameloop(self):
