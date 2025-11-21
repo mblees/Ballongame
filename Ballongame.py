@@ -53,6 +53,7 @@ class Ballongame:
 
 
 if __name__ == "__main__":
+    print("Starting Script")
     activate_logging_config()
     ballongame = Ballongame()
     ballongame.run()
