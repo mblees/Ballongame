@@ -135,6 +135,7 @@ class EasyMode(GenericGamemode):
         super().__init__("Easy Mode", tools)
 
     def run_gameloop(self):
+        self.reset_input_dict()
         self.update_variables()
         if self.first_cycle:
             self.interrupt_active = True
@@ -187,6 +188,7 @@ class MediumMode(GenericGamemode):
         super().__init__("Medium Mode", tools)
 
     def run_gameloop(self):
+        self.reset_input_dict()
         self.update_variables()
         if self.first_cycle:
             self.interrupt_active = True
@@ -239,6 +241,7 @@ class HardMode(GenericGamemode):
         self.last_player = 0
 
     def run_gameloop(self):
+        self.reset_input_dict()
         self.update_variables()
         if self.first_cycle:
             self.interrupt_active = True
