@@ -4,9 +4,9 @@ import paho.mqtt.client as mqtt
 import time
 import random
 
-LED_START = 0
+LED_0 = 0
 LED_1 = 15
-LED_2 = 30
+LED_2 = 29
 LED_3 = 45
 LED_4 = 60
 LED_5 = 75
@@ -22,7 +22,7 @@ class GamemodeTools:
         self.led = LED(self.pi, num_leds=75)
         self.servo = MiuzeiDigitalServo(self.pi, 13)
         
-        self.led.set_color((255, 0, 0), LED_START, LED_1)
+        self.led.set_color((255, 0, 0), LED_1, LED_2)
         self.led.turn_on()
         
         self.eject_button = Button(self.pi, 26)
@@ -94,9 +94,9 @@ class GamemodeTools:
             
     def display_inputs(self):
         if self.inputs[1]:
-            self.led.set_color((255, 255, 0), LED_1, LED_2)
+            self.led.set_color((255, 255, 0), LED_0, LED_1)
         else:
-            self.led.set_color((0, 0, 0), LED_1, LED_2)
+            self.led.set_color((0, 0, 0), LED_0, LED_1)
         if self.inputs[2]:
             self.led.set_color((255, 255, 0), LED_2, LED_3)
         else:
@@ -190,9 +190,9 @@ class EasyMode(GenericGamemode):
                 self.won = False
             self.releaseValve.close()
             self.reset_input_dict()
-            self.led.set_color((0, 255, 0), LED_START, LED_1)
+            self.led.set_color((0, 255, 0), LED_1, LED_2)
             self.pump.open()
-            self.led.sinus(period=0.33, cycles=3, start_led=LED_START, end_led=LED_1)
+            self.led.sinus(period=0.33, cycles=3, start_led=LED_1, end_led=LED_2)
             self.pump.close()
 
             balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
@@ -204,13 +204,13 @@ class EasyMode(GenericGamemode):
                 self.servo.eject_and_reset()
                 self.won = True
         else:
-            self.led.set_color((255, 0, 0), LED_START, LED_1)
+            self.led.set_color((255, 0, 0), LED_1, LED_2)
             self.releaseValve.open()
 
     def intro(self):
-        self.led.set_color((0, 255, 0), LED_START, LED_1)
-        self.led.load_bar(start_led=LED_START, end_led=LED_1)
-        self.led.set_color((255, 0, 0), LED_START, LED_1)
+        self.led.set_color((0, 255, 0), LED_1, LED_2)
+        self.led.load_bar(start_led=LED_1, end_led=LED_2)
+        self.led.set_color((255, 0, 0), LED_1, LED_2)
         self.first_cycle = False
 
 
@@ -242,9 +242,9 @@ class MediumMode(GenericGamemode):
                 self.releaseValve.open_time = 0
                 self.won = False
             self.reset_input_dict()
-            self.led.set_color((0, 255, 0) , LED_START, LED_1)
+            self.led.set_color((0, 255, 0) , LED_1, LED_2)
             self.pump.open()
-            self.led.sinus(start_led=LED_START, end_led=LED_1)
+            self.led.sinus(start_led=LED_1, end_led=LED_2)
             self.pump.close()
 
             balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
@@ -257,12 +257,12 @@ class MediumMode(GenericGamemode):
                 self.won = True
         else:
             self.releaseValve.open()
-            self.led.set_color((255, 0, 0), LED_START, LED_1)
+            self.led.set_color((255, 0, 0), LED_1, LED_2)
 
     def intro(self):
-        self.led.set_color((0, 0, 255), LED_START, LED_1)
-        self.led.load_bar(start_led=LED_START, end_led=LED_1)
-        self.led.set_color((255, 0, 0), LED_START, LED_1)
+        self.led.set_color((0, 0, 255), LED_1, LED_2)
+        self.led.load_bar(start_led=LED_1, end_led=LED_2)
+        self.led.set_color((255, 0, 0), LED_1, LED_2)
         self.first_cycle = False
 
 
@@ -288,16 +288,16 @@ class HardMode(GenericGamemode):
         self.releaseValve.close()
 
         random_player = self.choose_random_player()
-        self.led.set_color(self.get_color_by_player(random_player), LED_START, LED_1)
+        self.led.set_color(self.get_color_by_player(random_player), LED_1, LED_2)
         time.sleep(2)
         if self.inputs[random_player]:
             if self.won:
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
                 self.won = False
-            self.led.set_color((0, 255, 0), LED_START, LED_1)
+            self.led.set_color((0, 255, 0), LED_1, LED_2)
             self.pump.open()
-            self.led.sinus(cycles=5, start_led=LED_START, end_led=LED_1)
+            self.led.sinus(cycles=5, start_led=LED_1, end_led=LED_2)
             self.pump.close()
             self.reset_input_dict()
 
@@ -310,12 +310,12 @@ class HardMode(GenericGamemode):
                 self.servo.eject_and_reset()
                 self.won = True
         else:
-            self.led.set_color((255, 0, 0), LED_START, LED_1)
-            self.led.sinus(start_led=LED_START, end_led=LED_1)
+            self.led.set_color((255, 0, 0), LED_1, LED_2)
+            self.led.sinus(start_led=LED_1, end_led=LED_2)
 
     def intro(self):
-        self.led.set_color((255, 0, 0), LED_START, LED_1)
-        self.led.load_bar(start_led=LED_START, end_led=LED_1)
+        self.led.set_color((255, 0, 0), LED_1, LED_2)
+        self.led.load_bar(start_led=LED_1, end_led=LED_2)
         self.first_cycle = False
 
     def choose_random_player(self) -> int:
