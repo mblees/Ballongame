@@ -7,8 +7,8 @@ import random
 LED_0 = 0
 LED_1 = 15
 LED_2 = 29
-LED_3 = 47
-LED_4 = 57
+LED_3 = 50
+LED_4 = 55
 LED_5 = 75
 
 class GamemodeTools:
@@ -22,7 +22,7 @@ class GamemodeTools:
         self.led = LED(self.pi, num_leds=75)
         self.servo = MiuzeiDigitalServo(self.pi, 13)
         
-        self.led.set_color((255, 0, 0), LED_3, LED_4)
+        self.led.set_color((255, 255, 0), LED_3, LED_4)
         self.led.turn_on()
         
         self.eject_button = Button(self.pi, 26)
