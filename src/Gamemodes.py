@@ -178,7 +178,6 @@ class EasyMode(GenericGamemode):
         for key in self.inputs:
             if self.inputs[key]:
                 input_detected = True
-        self.display_inputs()
         if input_detected:
             if self.won:
                 self.pump.open_time = 0
