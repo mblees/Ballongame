@@ -55,7 +55,7 @@ class ReleaseValve:
 
 
 class LED:
-    def __init__(self, pi, num_leds: int = 1):
+    def __init__(self, pi, num_leds :int = 1):
         self.logger = logging.getLogger("LED")
         self.pin = board.D18
         self.pi = pi
@@ -65,19 +65,19 @@ class LED:
         self._state = False
         self._brightness = 0.3  # default full brightness
 
-    def _apply_color(self):
+    def _apply_color(self, start_led: int = 0, end_led: int = None):
         if self._state:
             scaled = tuple(int(c * self._brightness) for c in self._color)
-            self.pixels[:] = [scaled] * self.num_leds
+            self.pixels[start_led:end_led] = [scaled] * self.num_leds
         else:
-            self.pixels[:] = [(0, 0, 0)] * self.num_leds
+            self.pixels[start_led:end_led] = [(0, 0, 0)] * self.num_leds
 
-    def set_color(self, color: tuple[int, int, int]):
+    def set_color(self, color: tuple[int, int, int], start_led: int = 0, end_led: int = None):
         if self._color == color:
             return
         self._color = color
-        self._apply_color()
-
+        self._apply_color(start_led, end_led)
+        
     def blink(self, speed: float = 0.1, amount: int = 3):
         for _ in range(amount):
             self.turn_off()
@@ -85,58 +85,42 @@ class LED:
             self.turn_on()
             time.sleep(speed)
 
-    def sinus(self, period: float = 1, cycles: int = 3, steps: int = 15):
+    def sinus(self, period: float = 1, cycles: int = 3, steps: int = 15, start_led: int = 0, end_led: int = None):
         brightness_before = self._brightness
         self._state = True
         for _ in range(cycles):
             for i in range(steps):
                 angle = (i / steps) * 2 * math.pi
                 self._brightness = 0.5 * (1 - math.cos(angle))  # sine wave 0..1
-                self._apply_color()
+                self._apply_color(start_led, end_led)
                 time.sleep(period / steps)
         self.set_brightness(brightness_before)
 
-    def sparkle(self, duration: float = 3.0, chance: float = 0.2, interval: float = 0.05):
-        end_time = time.time() + duration
-        self._state = True
-        base_color = (0, 0, 0)
-
-        while time.time() < end_time:
-            frame = []
-            for _ in range(self.num_leds):
-                if random.random() < chance:
-                    sparkle_color = tuple(min(255, int(c * random.uniform(0, self._brightness))) for c in self._color)
-                    frame.append(sparkle_color)
-                else:
-                    frame.append(base_color)
-            self.pixels[:] = frame
-            time.sleep(interval)
-
-    def load_bar(self, delay: float = 0.025):
+    def load_bar(self, delay: float = 0.025, start_led: int = 0, end_led: int = None):
         self._state = True
         r, g, b = self._color
         r *= self._brightness
         g *= self._brightness
         b *= self._brightness
-        self.set_color((0, 0, 0))
-        for i in range(self.num_leds):
+        self.set_color((0, 0, 0), start_led, end_led)
+        for i in range(start_led, end_led if end_led is not None else self.num_leds):
             self.pixels[i] = (r, g, b)
             time.sleep(delay)
 
     def turn_on(self):
         self._state = True
-        self._apply_color()
+        self._apply_color(0, self.num_leds)
 
     def turn_off(self):
         self._state = False
-        self._apply_color()
-
+        self._apply_color(0, self.num_leds)
+        
     def set_brightness(self, brightness: float):
         brightness = max(0.0, min(1.0, brightness))
         if self._brightness == brightness:
             return
         self._brightness = brightness
-        self._apply_color()
+        self._apply_color(0, self.num_leds)
 
 
 class Speaker:
