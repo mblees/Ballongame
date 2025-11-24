@@ -191,7 +191,7 @@ class EasyMode(GenericGamemode):
             self.releaseValve.close()
             self.led.set_color((0, 255, 0), LED_2, LED_3)
             self.pump.open()
-            self.led.sinus(period=0.33, cycles=3, start_led=LED_2, end_led=LED_3)
+            time.sleep(1.5)
             self.pump.close()
 
             balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
