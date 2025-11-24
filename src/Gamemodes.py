@@ -22,7 +22,7 @@ class GamemodeTools:
         self.led = LED(self.pi, num_leds=75)
         self.servo = MiuzeiDigitalServo(self.pi, 13)
         
-        self.led.set_color((255, 0, 0), LED_2, LED_3)
+        self.led.set_color((255, 0, 0), LED_3, LED_4)
         self.led.turn_on()
         
         self.eject_button = Button(self.pi, 26)
@@ -98,9 +98,9 @@ class GamemodeTools:
         else:
             self.led.set_color((0, 0, 0), LED_0, LED_1)
         if self.inputs[2]:
-            self.led.set_color((255, 255, 0), LED_2, LED_3)
+            self.led.set_color((255, 255, 0), LED_1, LED_2)
         else:
-            self.led.set_color((0, 0, 0), LED_2, LED_3)
+            self.led.set_color((0, 0, 0), LED_1, LED_2)
         if self.inputs[3]:
             self.led.set_color((0, 255, 255), LED_3, LED_4)
         else:
