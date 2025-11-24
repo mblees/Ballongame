@@ -223,6 +223,8 @@ class MediumMode(GenericGamemode):
     def run_gameloop(self):
         self.reset_input_dict()
         self.update_variables()
+        self.tools.display_inputs()
+        
         if self.first_cycle:
             self.interrupt_active = True
             self.intro()
@@ -246,7 +248,7 @@ class MediumMode(GenericGamemode):
             self.reset_input_dict()
             self.led.set_color((0, 255, 0) , LED_2, LED_3)
             self.pump.open()
-            self.led.sinus(start_led=LED_2, end_led=LED_3)
+            time.sleep(3)
             self.pump.close()
 
             balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
@@ -276,6 +278,8 @@ class HardMode(GenericGamemode):
     def run_gameloop(self):
         self.reset_input_dict()
         self.update_variables()
+        self.tools.display_inputs()
+        
         if self.first_cycle:
             self.interrupt_active = True
             self.intro()
