@@ -170,7 +170,6 @@ class EasyMode(GenericGamemode):
             self.interrupt_active = True
             self.intro()
             self.interrupt_active = False
-            self.reset_input_dict()
 
         if self.interrupt_active:
             self.waiting = True
@@ -189,7 +188,6 @@ class EasyMode(GenericGamemode):
                 self.releaseValve.open_time = 0
                 self.won = False
             self.releaseValve.close()
-            self.reset_input_dict(clear_display=False)
             self.led.set_color((0, 255, 0), LED_2, LED_3)
             self.pump.open()
             self.led.sinus(period=0.33, cycles=3, start_led=LED_2, end_led=LED_3)
@@ -203,6 +201,7 @@ class EasyMode(GenericGamemode):
             if balloon_time > 40 and not self.explode:
                 self.servo.eject_and_reset()
                 self.won = True
+            self.reset_input_dict()
         else:
             self.led.set_color((255, 0, 0), LED_2, LED_3)
             self.releaseValve.open()
