@@ -6,9 +6,9 @@ import random
 
 LED_0 = 0
 LED_1 = 15
-LED_2 = 28
-LED_3 = 42
-LED_4 = 55
+LED_2 = 30
+LED_3 = 44
+LED_4 = 59
 LED_5 = 75
 
 class GamemodeTools:
@@ -24,6 +24,8 @@ class GamemodeTools:
         
         self.led.turn_on()
         self.led.set_color((255, 255, 0), LED_2, LED_3)
+        self.led.set_color((0, 255, 0), LED_3, LED_4)
+        self.led.set_color((0, 0, 255), LED_4, LED_5)
         
         self.eject_button = Button(self.pi, 26)
         self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
