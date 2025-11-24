@@ -98,7 +98,7 @@ class GamemodeTools:
         else:
             self.led.set_color((0, 0, 0), LED_0, LED_1)
         if self.inputs[2]:
-            self.led.set_color((255, 255, 0), LED_2, LED_3)
+            self.led.set_color((255, 165, 0), LED_2, LED_3)
         else:
             self.led.set_color((0, 0, 0), LED_2, LED_3)
         if self.inputs[3]:
