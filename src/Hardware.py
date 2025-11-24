@@ -64,6 +64,7 @@ class LED:
         self._color = (0, 0, 0)
         self._state = False
         self._brightness = 0.3  # default full brightness
+        self.animation_lock = False
 
     def _apply_color(self, start_led: int = 0, end_led: int = None):
         if start_led != 30:
@@ -75,6 +76,8 @@ class LED:
             self.pixels[start_led:end_led] = [(0, 0, 0)] * self.num_leds
 
     def set_color(self, color: tuple[int, int, int], start_led: int = 0, end_led: int = None):
+        if self.animation_lock:
+            return
         self._color = color
         self._apply_color(start_led, end_led)
         
@@ -86,6 +89,7 @@ class LED:
             time.sleep(speed)
 
     def sinus(self, period: float = 1, cycles: int = 3, steps: int = 15, start_led: int = 0, end_led: int = None):
+        self.animation_lock = True
         brightness_before = self._brightness
         self._state = True
         for _ in range(cycles):
@@ -95,6 +99,7 @@ class LED:
                 self._apply_color(start_led, end_led)
                 time.sleep(period / steps)
         self.set_brightness(brightness_before)
+        self.animation_lock = False
 
     def load_bar(self, delay: float = 0.025, start_led: int = 0, end_led: int = None):
         self._state = True
