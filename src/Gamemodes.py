@@ -301,7 +301,7 @@ class HardMode(GenericGamemode):
 
         random_player = self.choose_random_player()
         self.led.set_color(self.get_color_by_player(random_player), LED_2, LED_3)
-        time.sleep(0.5)
+        time.sleep(1.5)
         
         input_amount = 0
         for key in self.tools.inputs:
