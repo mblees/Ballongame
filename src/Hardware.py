@@ -67,7 +67,7 @@ class LED:
         self.animation_lock = False
 
     def _apply_color(self, start_led: int = 0, end_led: int = None):
-        if start_led != 30 and self._color is not (0, 0, 0):
+        if start_led != 30 and self._color != (0, 0, 0):
             self.logger.debug(f"Applying color {self._color} in range {start_led}-{end_led}")
         if self._state:
             scaled = tuple(int(c * self._brightness) for c in self._color)
