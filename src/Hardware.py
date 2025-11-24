@@ -65,18 +65,16 @@ class LED:
         self._state = False
         self._brightness = 0.3  # default full brightness
 
-    def _apply_color(self):
+    def _apply_color(self, start_led: int = 0, end_led: int = None):
         if self._state:
             scaled = tuple(int(c * self._brightness) for c in self._color)
-            self.pixels[:] = [scaled] * self.num_leds
+            self.pixels[start_led:end_led] = [scaled] * self.num_leds
         else:
-            self.pixels[:] = [(0, 0, 0)] * self.num_leds
+            self.pixels[start_led:end_led] = [(0, 0, 0)] * self.num_leds
 
     def set_color(self, color: tuple[int, int, int], start_led: int = 0, end_led: int = None):
-        if self._color == color:
-            return
         self._color = color
-        self._apply_color()
+        self._apply_color(start_led, end_led)
         
     def blink(self, speed: float = 0.1, amount: int = 3):
         for _ in range(amount):
@@ -92,7 +90,7 @@ class LED:
             for i in range(steps):
                 angle = (i / steps) * 2 * math.pi
                 self._brightness = 0.5 * (1 - math.cos(angle))  # sine wave 0..1
-                self._apply_color()
+                self._apply_color(start_led, end_led)
                 time.sleep(period / steps)
         self.set_brightness(brightness_before)
 
@@ -109,18 +107,18 @@ class LED:
 
     def turn_on(self):
         self._state = True
-        self._apply_color()
+        self._apply_color(0, self.num_leds)
 
     def turn_off(self):
         self._state = False
-        self._apply_color()
+        self._apply_color(0, self.num_leds)
         
     def set_brightness(self, brightness: float):
         brightness = max(0.0, min(1.0, brightness))
         if self._brightness == brightness:
             return
         self._brightness = brightness
-        self._apply_color()
+        self._apply_color(0, self.num_leds)
 
 
 class Speaker:
