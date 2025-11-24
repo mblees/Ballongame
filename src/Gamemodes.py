@@ -319,7 +319,7 @@ class HardMode(GenericGamemode):
                 self.won = True
         else:
             self.led.set_color((255, 0, 0), LED_2, LED_3)
-            time.sleep(1)
+            time.sleep(0.5)
 
     def intro(self):
         self.led.set_color((255, 0, 0), LED_2, LED_3)
