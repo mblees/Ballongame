@@ -98,7 +98,7 @@ class LED:
                 self._brightness = 0.5 * (1 - math.cos(angle))  # sine wave 0..1
                 self._apply_color(start_led, end_led)
                 time.sleep(period / steps)
-        self.set_brightness(brightness_before)
+        self.set_brightness(brightness_before, start_led, end_led)
         self.animation_lock = False
 
     def load_bar(self, delay: float = 0.025, start_led: int = 0, end_led: int = None):
@@ -120,12 +120,12 @@ class LED:
         self._state = False
         self._apply_color(0, self.num_leds)
         
-    def set_brightness(self, brightness: float):
+    def set_brightness(self, brightness: float, start_led: int = 0, end_led: int = None):
         brightness = max(0.0, min(1.0, brightness))
         if self._brightness == brightness:
             return
         self._brightness = brightness
-        self._apply_color(0, self.num_leds)
+        self._apply_color(start_led, end_led)
 
 
 class Speaker:
