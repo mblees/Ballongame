@@ -141,6 +141,10 @@ class GenericGamemode:
 
     def reset_input_dict(self):
         self.tools.inputs = {1: False, 2: False, 3: False, 4: False}
+        self.led.set_color((0, 0, 0), LED_0, LED_1)
+        self.led.set_color((0, 0, 0), LED_1, LED_2)
+        self.led.set_color((0, 0, 0), LED_3, LED_4)
+        self.led.set_color((0, 0, 0), LED_4, LED_5)
         
     def cleanup(self):
         self.logger.info("Cleaning up Gamemode resources...")
@@ -175,7 +179,9 @@ class EasyMode(GenericGamemode):
         input_detected = False
         for key in self.inputs:
             if self.inputs[key]:
+                self.logger.debug(f"Input from Player {key} in GameLoop detected.")
                 input_detected = True
+                
         if input_detected:
             if self.won:
                 self.pump.open_time = 0
@@ -229,7 +235,7 @@ class MediumMode(GenericGamemode):
         for key in self.inputs:
             if self.inputs[key]:
                 input_amount += 1
-        if input_amount > 2:
+        if input_amount > 1:
             self.releaseValve.close()
             if self.won:
                 self.pump.open_time = 0
