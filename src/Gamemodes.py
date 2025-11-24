@@ -22,8 +22,8 @@ class GamemodeTools:
         self.led = LED(self.pi, num_leds=75)
         self.servo = MiuzeiDigitalServo(self.pi, 13)
         
-        self.led.set_color((255, 255, 0), LED_3, LED_4)
         self.led.turn_on()
+        self.led.set_color((255, 255, 0), LED_3, LED_4)
         
         self.eject_button = Button(self.pi, 26)
         self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
