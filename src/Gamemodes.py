@@ -249,7 +249,7 @@ class MediumMode(GenericGamemode):
             self.reset_input_dict()
             self.led.set_color((0, 255, 0) , LED_2, LED_3)
             self.pump.open()
-            time.sleep(3)
+            time.sleep(2)
             self.pump.close()
 
             balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
