@@ -35,7 +35,7 @@ class GamemodeTools:
         self.mqtt_client = mqtt.Client()
         self.init_mqtt_client()
         self.previous_payload = {}
-        self.inputs: dict[int, bool] = {}
+        self.inputs: dict[int, bool] = {1: False, 2: False, 3: False, 4: False}
         
         self.pi.write(6, 1)
         
