@@ -142,10 +142,13 @@ class GenericGamemode:
     def reset_input_dict(self, clear_display: bool = True):
         self.tools.inputs = {1: False, 2: False, 3: False, 4: False}
         if clear_display:
-            self.led.set_color((0, 0, 0), LED_0, LED_1)
-            self.led.set_color((0, 0, 0), LED_1, LED_2)
-            self.led.set_color((0, 0, 0), LED_3, LED_4)
-            self.led.set_color((0, 0, 0), LED_4, LED_5)
+            self.clear_display()
+            
+    def clear_display(self):
+        self.led.set_color((0, 0, 0), LED_0, LED_1)
+        self.led.set_color((0, 0, 0), LED_1, LED_2)
+        self.led.set_color((0, 0, 0), LED_3, LED_4)
+        self.led.set_color((0, 0, 0), LED_4, LED_5)
         
     def cleanup(self):
         self.logger.info("Cleaning up Gamemode resources...")
@@ -166,6 +169,7 @@ class EasyMode(GenericGamemode):
 
     def run_gameloop(self):
         self.update_variables()
+        self.clear_display()
         if self.first_cycle:
             self.interrupt_active = True
             self.intro()
@@ -187,6 +191,7 @@ class EasyMode(GenericGamemode):
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
                 self.won = False
+            self.reset_input_dict(clear_display=False)
             self.releaseValve.close()
             self.led.set_color((0, 255, 0), LED_2, LED_3)
             self.pump.open()
@@ -201,7 +206,6 @@ class EasyMode(GenericGamemode):
             if balloon_time > 40 and not self.explode:
                 self.servo.eject_and_reset()
                 self.won = True
-            self.reset_input_dict()
         else:
             self.led.set_color((255, 0, 0), LED_2, LED_3)
             self.releaseValve.open()
