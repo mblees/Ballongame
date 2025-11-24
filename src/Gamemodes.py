@@ -91,7 +91,7 @@ class GamemodeTools:
     
     def display_inputs(self):
         if self.inputs[1]:
-            self.led.set_color((255, 80, 120), LED_0, LED_1)
+            self.led.set_color((150, 80, 0), LED_0, LED_1)
         else:
             self.led.set_color((0, 0, 0), LED_0, LED_1)
                 
@@ -349,7 +349,7 @@ class HardMode(GenericGamemode):
 
     def get_color_by_player(self, player: int) -> tuple[int, int, int]:
         if player == 1:
-            return 255, 80, 120
+            return 150, 80, 0
         elif player == 2:
             return 255, 255, 0
         elif player == 3:
