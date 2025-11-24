@@ -301,8 +301,15 @@ class HardMode(GenericGamemode):
 
         random_player = self.choose_random_player()
         self.led.set_color(self.get_color_by_player(random_player), LED_2, LED_3)
-        time.sleep(2)
-        if self.inputs[random_player]:
+        time.sleep(0.5)
+        
+        input_amount = 0
+        for key in self.tools.inputs:
+            if self.tools.inputs[key]:
+                input_amount += 1
+        self.logger.debug(f"{self.tools.inputs} -> {input_amount} inputs detected.")
+        
+        if self.inputs[random_player] and input_amount == 1:
             if self.won:
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
