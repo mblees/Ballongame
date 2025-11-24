@@ -262,6 +262,7 @@ class MediumMode(GenericGamemode):
         else:
             self.releaseValve.open()
             self.led.set_color((255, 0, 0), LED_2, LED_3)
+            time.sleep(1)
 
     def intro(self):
         self.led.set_color((0, 0, 255), LED_2, LED_3)
