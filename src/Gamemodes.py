@@ -23,9 +23,7 @@ class GamemodeTools:
         self.servo = MiuzeiDigitalServo(self.pi, 13)
         
         self.led.turn_on()
-        self.led.set_color((255, 255, 0), LED_2, LED_3)
-        self.led.set_color((0, 255, 0), LED_3, LED_4)
-        self.led.set_color((0, 0, 255), LED_4, LED_5)
+        self.led.set_color((255, 0, 0), LED_2, LED_3)
         
         self.eject_button = Button(self.pi, 26)
         self.eject_button.enable_interrupt(callback=self.servo.eject_and_reset, poll_interval=2)
@@ -167,8 +165,6 @@ class EasyMode(GenericGamemode):
         super().__init__("Easy Mode", tools)
 
     def run_gameloop(self):
-        while True:
-            pass
         self.reset_input_dict()
         self.update_variables()
         if self.first_cycle:
@@ -211,9 +207,9 @@ class EasyMode(GenericGamemode):
 
     def intro(self):
         self.logger.debug("Starting Intro Sequence for EasyMode")
-        self.led.set_color((0, 255, 0), LED_3, LED_4)
-        self.led.load_bar(start_led=LED_3, end_led=LED_4)
-        self.led.set_color((255, 0, 0), LED_4, LED_4)
+        self.led.set_color((0, 255, 0), LED_2, LED_3)
+        self.led.load_bar(start_led=LED_2, end_led=LED_3)
+        self.led.set_color((255, 0, 0), LED_2, LED_3)
         self.first_cycle = False
 
 
