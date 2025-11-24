@@ -7,8 +7,8 @@ import random
 LED_0 = 0
 LED_1 = 15
 LED_2 = 29
-LED_3 = 45
-LED_4 = 60
+LED_3 = 46
+LED_4 = 59
 LED_5 = 75
 
 class GamemodeTools:
