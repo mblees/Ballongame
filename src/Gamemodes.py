@@ -166,7 +166,6 @@ class EasyMode(GenericGamemode):
     def run_gameloop(self):
         self.reset_input_dict()
         self.update_variables()
-        self.tools.display_inputs()
         if self.first_cycle:
             self.interrupt_active = True
             self.intro()
