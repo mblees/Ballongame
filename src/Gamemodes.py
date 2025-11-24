@@ -125,10 +125,8 @@ class GenericGamemode:
     def print_mode(self):
         self.logger.info(f"Mode is set to: {str(self.mode)}")
 
-    def reset_input_dict(self, clear_display: bool = True):
+    def reset_input_dict(self):
         self.tools.inputs = {1: False, 2: False, 3: False, 4: False}
-        if clear_display:
-            self.clear_display()
             
     def display_inputs(self):
         if self.inputs[1]:
@@ -247,7 +245,7 @@ class MediumMode(GenericGamemode):
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
                 self.won = False
-            self.reset_input_dict(clear_display=False)
+            self.reset_input_dict()
             self.led.set_color((0, 255, 0) , LED_2, LED_3)
             self.pump.open()
             self.led.sinus(start_led=LED_2, end_led=LED_3)
@@ -305,7 +303,7 @@ class HardMode(GenericGamemode):
             self.pump.open()
             self.led.sinus(cycles=5, start_led=LED_2, end_led=LED_3)
             self.pump.close()
-            self.reset_input_dict(clear_display=False)
+            self.reset_input_dict()
 
             balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
             self.logger.debug(f"on-time: {balloon_time}")
