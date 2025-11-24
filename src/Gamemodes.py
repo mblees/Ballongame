@@ -139,12 +139,13 @@ class GenericGamemode:
     def print_mode(self):
         self.logger.info(f"Mode is set to: {str(self.mode)}")
 
-    def reset_input_dict(self):
+    def reset_input_dict(self, clear_display: bool = True):
         self.tools.inputs = {1: False, 2: False, 3: False, 4: False}
-        self.led.set_color((0, 0, 0), LED_0, LED_1)
-        self.led.set_color((0, 0, 0), LED_1, LED_2)
-        self.led.set_color((0, 0, 0), LED_3, LED_4)
-        self.led.set_color((0, 0, 0), LED_4, LED_5)
+        if clear_display:
+            self.led.set_color((0, 0, 0), LED_0, LED_1)
+            self.led.set_color((0, 0, 0), LED_1, LED_2)
+            self.led.set_color((0, 0, 0), LED_3, LED_4)
+            self.led.set_color((0, 0, 0), LED_4, LED_5)
         
     def cleanup(self):
         self.logger.info("Cleaning up Gamemode resources...")
@@ -188,7 +189,7 @@ class EasyMode(GenericGamemode):
                 self.releaseValve.open_time = 0
                 self.won = False
             self.releaseValve.close()
-            self.reset_input_dict()
+            self.reset_input_dict(clear_display=False)
             self.led.set_color((0, 255, 0), LED_2, LED_3)
             self.pump.open()
             self.led.sinus(period=0.33, cycles=3, start_led=LED_2, end_led=LED_3)
@@ -241,7 +242,7 @@ class MediumMode(GenericGamemode):
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
                 self.won = False
-            self.reset_input_dict()
+            self.reset_input_dict(clear_display=False)
             self.led.set_color((0, 255, 0) , LED_2, LED_3)
             self.pump.open()
             self.led.sinus(start_led=LED_2, end_led=LED_3)
@@ -299,7 +300,7 @@ class HardMode(GenericGamemode):
             self.pump.open()
             self.led.sinus(cycles=5, start_led=LED_2, end_led=LED_3)
             self.pump.close()
-            self.reset_input_dict()
+            self.reset_input_dict(clear_display=False)
 
             balloon_time = self.pump.open_time - self.releaseValve.open_time / 1.5
             self.logger.debug(f"on-time: {balloon_time}")
