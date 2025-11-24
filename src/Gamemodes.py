@@ -144,7 +144,7 @@ class GenericGamemode:
         self.logger.info(f"Mode is set to: {str(self.mode)}")
 
     def reset_input_dict(self):
-        self.inputs = {1: False, 2: False, 3: False, 4: False}     
+        self.tools.inputs = {1: False, 2: False, 3: False, 4: False}     
 
     def cleanup(self):
         self.logger.info("Cleaning up Gamemode resources...")
