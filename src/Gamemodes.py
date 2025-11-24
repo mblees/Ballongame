@@ -204,6 +204,8 @@ class EasyMode(GenericGamemode):
             if balloon_time > 40 and not self.explode:
                 self.servo.eject_and_reset()
                 self.won = True
+                self.pump.open_time = 0
+                self.releaseValve.open_time = 0
         else:
             self.led.set_color((255, 0, 0), LED_2, LED_3)
             self.releaseValve.open()
@@ -260,6 +262,8 @@ class MediumMode(GenericGamemode):
             if balloon_time > 40 and not self.explode:
                 self.servo.eject_and_reset()
                 self.won = True
+                self.pump.open_time = 0
+                self.releaseValve.open_time = 0
         else:
             self.releaseValve.open()
             self.led.set_color((255, 0, 0), LED_2, LED_3)
@@ -317,6 +321,8 @@ class HardMode(GenericGamemode):
             if balloon_time > 40 and not self.explode:
                 self.servo.eject_and_reset()
                 self.won = True
+                self.pump.open_time = 0
+                self.releaseValve.open_time = 0
         else:
             self.led.set_color((255, 0, 0), LED_2, LED_3)
             time.sleep(0.5)
