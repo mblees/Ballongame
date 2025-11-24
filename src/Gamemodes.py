@@ -86,27 +86,7 @@ class GamemodeTools:
             self.logger.debug("Explode mode deactivated")
         else:
             self.explode = True
-            self.logger.debug("Explode mode activated")
-            
-    def display_inputs(self):
-        if self.inputs[1]:
-            self.led.set_color((255, 255, 0), LED_1, LED_2)
-        else:
-            self.led.set_color((0, 0, 0), LED_1, LED_2)
-        if self.inputs[2]:
-            self.led.set_color((255, 255, 0), LED_2, LED_3)
-        else:
-            self.led.set_color((0, 0, 0), LED_2, LED_3)
-        if self.inputs[3]:
-            self.led.set_color((0, 255, 255), LED_3, LED_4)
-        else:
-            self.led.set_color((0, 0, 0), LED_3, LED_4)
-        if self.inputs[4]:
-            self.led.set_color((255, 0, 255), LED_4, LED_5)
-        else:
-            self.led.set_color((0, 0, 0), LED_4, LED_5)
-                
-    
+            self.logger.debug("Explode mode activated")    
     
 class GenericGamemode:
     def __init__(self, logging_name: str, tools: GamemodeTools):
@@ -154,6 +134,24 @@ class GenericGamemode:
         self.inputs = self.tools.inputs
         self.previous_payload = self.tools.previous_payload
         self.explode = self.tools.explode
+        
+    def display_inputs(self):
+        if self.inputs[1]:
+            self.led.set_color((255, 255, 0), LED_1, LED_2)
+        else:
+            self.led.set_color((0, 0, 0), LED_1, LED_2)
+        if self.inputs[2]:
+            self.led.set_color((255, 255, 0), LED_2, LED_3)
+        else:
+            self.led.set_color((0, 0, 0), LED_2, LED_3)
+        if self.inputs[3]:
+            self.led.set_color((0, 255, 255), LED_3, LED_4)
+        else:
+            self.led.set_color((0, 0, 0), LED_3, LED_4)
+        if self.inputs[4]:
+            self.led.set_color((255, 0, 255), LED_4, LED_5)
+        else:
+            self.led.set_color((0, 0, 0), LED_4, LED_5)
 
 
 class EasyMode(GenericGamemode):
@@ -177,6 +175,7 @@ class EasyMode(GenericGamemode):
         for key in self.inputs:
             if self.inputs[key]:
                 input_detected = True
+        self.display_inputs()
         if input_detected:
             if self.won:
                 self.pump.open_time = 0
@@ -229,6 +228,7 @@ class MediumMode(GenericGamemode):
         for key in self.inputs:
             if self.inputs[key]:
                 input_amount += 1
+        self.display_inputs()
         if input_amount > 2:
             self.releaseValve.close()
             if self.won:
@@ -284,6 +284,7 @@ class HardMode(GenericGamemode):
         random_player = self.choose_random_player()
         self.led.set_color(self.get_color_by_player(random_player), LED_START, LED_1)
         time.sleep(2)
+        self.display_inputs()
         if self.inputs[random_player]:
             if self.won:
                 self.pump.open_time = 0
