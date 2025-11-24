@@ -208,9 +208,9 @@ class EasyMode(GenericGamemode):
             self.releaseValve.open()
 
     def intro(self):
-        self.led.set_color((0, 255, 0), LED_2, LED_3)
-        self.led.load_bar(start_led=LED_2, end_led=LED_3)
-        self.led.set_color((255, 0, 0), LED_2, LED_3)
+        self.led.set_color((0, 255, 0), LED_3, LED_4)
+        self.led.load_bar(start_led=LED_3, end_led=LED_4)
+        self.led.set_color((255, 0, 0), LED_4, LED_4)
         self.first_cycle = False
 
 
