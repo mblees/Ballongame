@@ -208,6 +208,7 @@ class EasyMode(GenericGamemode):
             self.releaseValve.open()
 
     def intro(self):
+        self.logger.debug("Starting Intro Sequence for EasyMode")
         self.led.set_color((0, 255, 0), LED_3, LED_4)
         self.led.load_bar(start_led=LED_3, end_led=LED_4)
         self.led.set_color((255, 0, 0), LED_4, LED_4)
