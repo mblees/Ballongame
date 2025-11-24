@@ -305,7 +305,7 @@ class HardMode(GenericGamemode):
                 self.won = False
             self.led.set_color((0, 255, 0), LED_2, LED_3)
             self.pump.open()
-            self.led.sinus(cycles=5, start_led=LED_2, end_led=LED_3)
+            time.sleep(5)
             self.pump.close()
             self.reset_input_dict()
 
@@ -319,7 +319,7 @@ class HardMode(GenericGamemode):
                 self.won = True
         else:
             self.led.set_color((255, 0, 0), LED_2, LED_3)
-            self.led.sinus(start_led=LED_2, end_led=LED_3)
+            time.sleep(1)
 
     def intro(self):
         self.led.set_color((255, 0, 0), LED_2, LED_3)
