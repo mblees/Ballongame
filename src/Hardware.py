@@ -66,7 +66,8 @@ class LED:
         self._brightness = 0.3  # default full brightness
 
     def _apply_color(self, start_led: int = 0, end_led: int = None):
-        self.logger.debug(f"Applying color {self._color} in range {start_led}-{end_led}")
+        if start_led != 30:
+            self.logger.debug(f"Applying color {self._color} in range {start_led}-{end_led}")
         if self._state:
             scaled = tuple(int(c * self._brightness) for c in self._color)
             self.pixels[start_led:end_led] = [scaled] * self.num_leds
