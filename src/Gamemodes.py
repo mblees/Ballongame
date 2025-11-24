@@ -91,20 +91,6 @@ class GamemodeTools:
         else:
             self.explode = True
             self.logger.debug("Explode mode activated")
-            
-    def display_inputs(self):
-        if self.inputs[1]:
-            self.led.set_color((255, 0, 255), LED_0, LED_1)
-            
-        if self.inputs[2]:
-            self.led.set_color((255, 255, 0), LED_1, LED_2)
-            
-        if self.inputs[3]:
-            self.led.set_color((0, 255, 255), LED_3, LED_4)
-            
-        if self.inputs[4]:
-            self.led.set_color((255, 70, 0), LED_4, LED_5)
-                
     
     
 class GenericGamemode:
@@ -144,12 +130,28 @@ class GenericGamemode:
         if clear_display:
             self.clear_display()
             
-    def clear_display(self):
-        self.led.set_color((0, 0, 0), LED_0, LED_1)
-        self.led.set_color((0, 0, 0), LED_1, LED_2)
-        self.led.set_color((0, 0, 0), LED_3, LED_4)
-        self.led.set_color((0, 0, 0), LED_4, LED_5)
+    def display_inputs(self):
+        if self.inputs[1]:
+            self.led.set_color((255, 0, 255), LED_0, LED_1)
+        else:
+            self.led.set_color((0, 0, 0), LED_0, LED_1)
+                
+        if self.inputs[2]:
+            self.led.set_color((255, 255, 0), LED_1, LED_2)
+        else:
+            self.led.set_color((0, 0, 0), LED_1, LED_2)
+                
+        if self.inputs[3]:
+            self.led.set_color((0, 255, 255), LED_3, LED_4)
+        else:
+            self.led.set_color((0, 0, 0), LED_3, LED_4)
+                
+        if self.inputs[4]:
+            self.led.set_color((255, 70, 0), LED_4, LED_5)
+        else:
+            self.led.set_color((0, 0, 0), LED_4, LED_5)
         
+
     def cleanup(self):
         self.logger.info("Cleaning up Gamemode resources...")
         self.pump.close()
@@ -170,7 +172,7 @@ class EasyMode(GenericGamemode):
     def run_gameloop(self):
         self.reset_input_dict()
         self.update_variables()
-        self.clear_display()
+        self.display_inputs()
         if self.first_cycle:
             self.interrupt_active = True
             self.intro()
@@ -192,7 +194,6 @@ class EasyMode(GenericGamemode):
                 self.pump.open_time = 0
                 self.releaseValve.open_time = 0
                 self.won = False
-            self.reset_input_dict(clear_display=False)
             self.releaseValve.close()
             self.led.set_color((0, 255, 0), LED_2, LED_3)
             self.pump.open()
