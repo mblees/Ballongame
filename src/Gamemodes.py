@@ -58,7 +58,8 @@ class GamemodeTools:
             elif topic == "Pico4/Eingabe":
                 self.logger.debug("Input from Player 4 detected.")
                 self.inputs[4] = True
-                
+        
+        self.display_inputs()
         self.previous_payload[topic] = payload
         
     def init_mqtt_client(self):
@@ -87,6 +88,27 @@ class GamemodeTools:
         else:
             self.explode = True
             self.logger.debug("Explode mode activated")
+    
+    def display_inputs(self):
+        if self.inputs[1]:
+            self.led.set_color((255, 0, 255), LED_0, LED_1)
+        else:
+            self.led.set_color((0, 0, 0), LED_0, LED_1)
+                
+        if self.inputs[2]:
+            self.led.set_color((255, 255, 0), LED_1, LED_2)
+        else:
+            self.led.set_color((0, 0, 0), LED_1, LED_2)
+                
+        if self.inputs[3]:
+            self.led.set_color((0, 255, 255), LED_3, LED_4)
+        else:
+            self.led.set_color((0, 0, 0), LED_3, LED_4)
+                
+        if self.inputs[4]:
+            self.led.set_color((255, 70, 0), LED_4, LED_5)
+        else:
+            self.led.set_color((0, 0, 0), LED_4, LED_5)
     
     
 class GenericGamemode:
@@ -122,29 +144,7 @@ class GenericGamemode:
         self.logger.info(f"Mode is set to: {str(self.mode)}")
 
     def reset_input_dict(self):
-        self.tools.inputs = {1: False, 2: False, 3: False, 4: False}
-            
-    def display_inputs(self):
-        if self.inputs[1]:
-            self.led.set_color((255, 0, 255), LED_0, LED_1)
-        else:
-            self.led.set_color((0, 0, 0), LED_0, LED_1)
-                
-        if self.inputs[2]:
-            self.led.set_color((255, 255, 0), LED_1, LED_2)
-        else:
-            self.led.set_color((0, 0, 0), LED_1, LED_2)
-                
-        if self.inputs[3]:
-            self.led.set_color((0, 255, 255), LED_3, LED_4)
-        else:
-            self.led.set_color((0, 0, 0), LED_3, LED_4)
-                
-        if self.inputs[4]:
-            self.led.set_color((255, 70, 0), LED_4, LED_5)
-        else:
-            self.led.set_color((0, 0, 0), LED_4, LED_5)
-        
+        self.inputs = {1: False, 2: False, 3: False, 4: False}     
 
     def cleanup(self):
         self.logger.info("Cleaning up Gamemode resources...")
@@ -166,7 +166,7 @@ class EasyMode(GenericGamemode):
     def run_gameloop(self):
         self.reset_input_dict()
         self.update_variables()
-        self.display_inputs()
+        self.tools.display_inputs()
         if self.first_cycle:
             self.interrupt_active = True
             self.intro()

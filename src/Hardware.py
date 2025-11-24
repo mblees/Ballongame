@@ -88,7 +88,7 @@ class LED:
             self.turn_on()
             time.sleep(speed)
 
-    def sinus(self, period: float = 1, cycles: int = 3, steps: int = 15, start_led: int = 0, end_led: int = None):
+    def sinus(self, period: float = 1, cycles: int = 3, steps: int = 7, start_led: int = 0, end_led: int = None):
         self.animation_lock = True
         brightness_before = self._brightness
         self._state = True
