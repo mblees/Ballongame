@@ -236,8 +236,8 @@ class MediumMode(GenericGamemode):
         self.waiting = False
 
         input_amount = 0
-        for key in self.inputs:
-            if self.inputs[key]:
+        for key in self.tools.inputs:
+            if self.tools.inputs[key]:
                 input_amount += 1
         self.logger.debug(f"Number of inputs detected: {input_amount}")
         if input_amount > 1:
