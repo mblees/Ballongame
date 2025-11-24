@@ -47,19 +47,22 @@ class GamemodeTools:
             if topic == "Pico2/Eingabe":
                 self.logger.debug("Input from Player 2 detected.")
                 self.inputs[2] = True
+                self.display_inputs()
 
         if payload == "0":
             if topic == "Pico1/Eingabe":
                 self.logger.debug("Input from Player 1 detected.")
                 self.inputs[1] = True
+                self.display_inputs()
             elif topic == "Pico3/Eingabe":
                 self.logger.debug("Input from Player 3 detected.")
                 self.inputs[3] = True
+                self.display_inputs()
             elif topic == "Pico4/Eingabe":
                 self.logger.debug("Input from Player 4 detected.")
                 self.inputs[4] = True
+                self.display_inputs()
                 
-        self.display_inputs()
         self.previous_payload[topic] = payload
         
     def init_mqtt_client(self):
