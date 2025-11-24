@@ -162,6 +162,8 @@ class EasyMode(GenericGamemode):
         super().__init__("Easy Mode", tools)
 
     def run_gameloop(self):
+        while True:
+            pass
         self.reset_input_dict()
         self.update_variables()
         if self.first_cycle:
