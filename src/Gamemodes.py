@@ -239,7 +239,7 @@ class MediumMode(GenericGamemode):
         for key in self.tools.inputs:
             if self.tools.inputs[key]:
                 input_amount += 1
-        self.logger.debug(f"Number of inputs detected: {input_amount}")
+        self.logger.debug(f"{self.tools.inputs} -> {input_amount} inputs detected.")
         if input_amount > 1:
             self.releaseValve.close()
             if self.won:
@@ -264,7 +264,6 @@ class MediumMode(GenericGamemode):
             self.releaseValve.open()
             self.led.set_color((255, 0, 0), LED_2, LED_3)
             time.sleep(1)
-            self.reset_input_dict()
 
     def intro(self):
         self.led.set_color((0, 0, 255), LED_2, LED_3)
