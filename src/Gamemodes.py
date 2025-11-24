@@ -221,7 +221,6 @@ class MediumMode(GenericGamemode):
         super().__init__("Medium Mode", tools)
 
     def run_gameloop(self):
-        self.reset_input_dict()
         self.update_variables()
         self.tools.display_inputs()
         
@@ -229,6 +228,7 @@ class MediumMode(GenericGamemode):
             self.interrupt_active = True
             self.intro()
             self.interrupt_active = False
+            self.reset_input_dict()
 
         if self.interrupt_active:
             self.waiting = True
@@ -264,6 +264,7 @@ class MediumMode(GenericGamemode):
             self.releaseValve.open()
             self.led.set_color((255, 0, 0), LED_2, LED_3)
             time.sleep(1)
+            self.reset_input_dict()
 
     def intro(self):
         self.led.set_color((0, 0, 255), LED_2, LED_3)
